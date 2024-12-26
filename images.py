@@ -4,14 +4,14 @@ import json
 with open(r'C:\Users\conwa\OneDrive\Documents\tarot\tarot_descriptions.json') as file:
     data = json.load(file)
 
-# Function to add '/cards/' before file names
+# Function to add 'cards/' before file names
 def add_cards_prefix(obj):
     if isinstance(obj, dict):
         return {k: add_cards_prefix(v) for k, v in obj.items()}
     elif isinstance(obj, list):
         return [add_cards_prefix(elem) for elem in obj]
     elif isinstance(obj, str) and obj.endswith(('.jpg', '.png', '.gif')):
-        return '/cards/' + obj
+        return 'cards/' + obj
     else:
         return obj
 

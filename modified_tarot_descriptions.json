@@ -2,133 +2,133 @@
   "Major Arcana": [
     {
       "name": "The Fool",
-      "image": "/cards/the_fool.png",
+      "image": "cards/the_fool.png",
       "description": "New beginnings, innocence, spontaneity.",
       "reversed": "Recklessness, risk-taking, naivety."
     },
     {
       "name": "The Magician",
-      "image": "/cards/the_magician.png",
+      "image": "cards/the_magician.png",
       "description": "Willpower, resourcefulness, manifestation.",
       "reversed": "Manipulation, trickery, wasted talent."
     },
     {
       "name": "The High Priestess",
-      "image": "/cards/the_high_priestess.png",
+      "image": "cards/the_high_priestess.png",
       "description": "Intuition, mystery, subconscious.",
       "reversed": "Secrets, hidden agendas, repressed feelings."
     },
     {
       "name": "The Empress",
-      "image": "/cards/the_empress.png",
+      "image": "cards/the_empress.png",
       "description": "Fertility, beauty, nurturing.",
       "reversed": "Neglect, smothering, creative block."
     },
     {
       "name": "The Emperor",
-      "image": "/cards/the_emperor.png",
+      "image": "cards/the_emperor.png",
       "description": "Authority, structure, control.",
       "reversed": "Domination, rigidity, lack of discipline."
     },
     {
       "name": "The Hierophant",
-      "image": "/cards/the_hierophant.png",
+      "image": "cards/the_hierophant.png",
       "description": "Tradition, conformity, spiritual wisdom.",
       "reversed": "Rebellion, subversiveness, new approaches."
     },
     {
       "name": "The Lovers",
-      "image": "/cards/the_lovers.png",
+      "image": "cards/the_lovers.png",
       "description": "Love, harmony, partnerships.",
       "reversed": "Disharmony, imbalance, misalignment of values."
     },
     {
       "name": "The Chariot",
-      "image": "/cards/the_chariot.png",
+      "image": "cards/the_chariot.png",
       "description": "Determination, victory, willpower.",
       "reversed": "Lack of direction, aggression, defeat."
     },
     {
       "name": "Strength",
-      "image": "/cards/strength.png",
+      "image": "cards/strength.png",
       "description": "Courage, patience, inner strength.",
       "reversed": "Self-doubt, weakness, insecurity."
     },
     {
       "name": "The Hermit",
-      "image": "/cards/the_hermit.png",
+      "image": "cards/the_hermit.png",
       "description": "Introspection, solitude, guidance.",
       "reversed": "Isolation, loneliness, withdrawal."
     },
     {
       "name": "Wheel of Fortune",
-      "image": "/cards/wheel_of_fortune.png",
+      "image": "cards/wheel_of_fortune.png",
       "description": "Change, cycles, fate.",
       "reversed": "Bad luck, resistance to change, breaking cycles."
     },
     {
       "name": "Justice",
-      "image": "/cards/justice.png",
+      "image": "cards/justice.png",
       "description": "Fairness, truth, law.",
       "reversed": "Unfairness, dishonesty, lack of accountability."
     },
     {
       "name": "The Hanged Man",
-      "image": "/cards/the_hanged_man.png",
+      "image": "cards/the_hanged_man.png",
       "description": "Sacrifice, suspension, new perspectives.",
       "reversed": "Stalling, needless sacrifice, fear of letting go."
     },
     {
       "name": "Death",
-      "image": "/cards/death.png",
+      "image": "cards/death.png",
       "description": "Transformation, endings, new beginnings.",
       "reversed": "Resistance to change, stagnation, inability to move on."
     },
     {
       "name": "Temperance",
-      "image": "/cards/temperance.png",
+      "image": "cards/temperance.png",
       "description": "Balance, moderation, purpose.",
       "reversed": "Imbalance, excess, lack of long-term vision."
     },
     {
       "name": "The Devil",
-      "image": "/cards/the_devil.png",
+      "image": "cards/the_devil.png",
       "description": "Addiction, materialism, bondage.",
       "reversed": "Release, detachment, breaking free."
     },
     {
       "name": "The Tower",
-      "image": "/cards/the_tower.png",
+      "image": "cards/the_tower.png",
       "description": "Sudden change, upheaval, revelation.",
       "reversed": "Avoiding disaster, fear of change, delaying the inevitable."
     },
     {
       "name": "The Star",
-      "image": "/cards/the_star.png",
+      "image": "cards/the_star.png",
       "description": "Hope, inspiration, serenity.",
       "reversed": "Lack of faith, despair, discouragement."
     },
     {
       "name": "The Moon",
-      "image": "/cards/the_moon.png",
+      "image": "cards/the_moon.png",
       "description": "Illusion, fear, subconscious.",
       "reversed": "Release of fear, repressed emotion, inner confusion."
     },
     {
       "name": "The Sun",
-      "image": "/cards/the_sun.png",
+      "image": "cards/the_sun.png",
       "description": "Joy, success, positivity.",
       "reversed": "Temporary depression, lack of success, pessimism."
     },
     {
       "name": "Judgement",
-      "image": "/cards/judgement.png",
+      "image": "cards/judgement.png",
       "description": "Reflection, reckoning, awakening.",
       "reversed": "Self-doubt, refusal of self-examination, self-loathing."
     },
     {
       "name": "The World",
-      "image": "/cards/the_world.png",
+      "image": "cards/the_world.png",
       "description": "Completion, fulfillment, accomplishment.",
       "reversed": "Lack of completion, stagnation, delay."
     }
@@ -136,85 +136,85 @@
   "Cups": [
     {
       "name": "Ace of Cups",
-      "image": "/cards/ace_of_cups.png",
+      "image": "cards/ace_of_cups.png",
       "description": "New feelings, spirituality, intuition.",
       "reversed": "Emotional loss, blocked creativity, emptiness."
     },
     {
       "name": "Two of Cups",
-      "image": "/cards/two_of_cups.png",
+      "image": "cards/two_of_cups.png",
       "description": "Partnership, unity, connection.",
       "reversed": "Broken communication, tension, misaligned values."
     },
     {
       "name": "Three of Cups",
-      "image": "/cards/three_of_cups.png",
+      "image": "cards/three_of_cups.png",
       "description": "Celebration, friendship, creativity.",
       "reversed": "Overindulgence, gossip, isolation."
     },
     {
       "name": "Four of Cups",
-      "image": "/cards/four_of_cups.png",
+      "image": "cards/four_of_cups.png",
       "description": "Apathy, contemplation, reevaluation.",
       "reversed": "New possibilities, acceptance, choosing happiness."
     },
     {
       "name": "Five of Cups",
-      "image": "/cards/five_of_cups.png",
+      "image": "cards/five_of_cups.png",
       "description": "Loss, regret, disappointment.",
       "reversed": "Acceptance, moving on, finding peace."
     },
     {
       "name": "Six of Cups",
-      "image": "/cards/six_of_cups.png",
+      "image": "cards/six_of_cups.png",
       "description": "Nostalgia, memories, reunion.",
       "reversed": "Living in the past, lacking playfulness, disappointment."
     },
     {
       "name": "Seven of Cups",
-      "image": "/cards/seven_of_cups.png",
+      "image": "cards/seven_of_cups.png",
       "description": "Choices, fantasy, illusion.",
       "reversed": "Clarity, focus, commitment to a path."
     },
     {
       "name": "Eight of Cups",
-      "image": "/cards/eight_of_cups.png",
+      "image": "cards/eight_of_cups.png",
       "description": "Withdrawal, retreat, moving on.",
       "reversed": "Stagnation, avoidance, fear of change."
     },
     {
       "name": "Nine of Cups",
-      "image": "/cards/nine_of_cups.png",
+      "image": "cards/nine_of_cups.png",
       "description": "Contentment, satisfaction, wishes fulfilled.",
       "reversed": "Inner happiness, materialism, dissatisfaction."
     },
     {
       "name": "Ten of Cups",
-      "image": "/cards/ten_of_cups.png",
+      "image": "cards/ten_of_cups.png",
       "description": "Harmony, marriage, happiness.",
       "reversed": "Broken home, domestic disharmony, unfulfillment."
     },
     {
       "name": "Page of Cups",
-      "image": "/cards/page_of_cups.png",
+      "image": "cards/page_of_cups.png",
       "description": "New ideas, intuitive messages, curiosity.",
       "reversed": "Emotional immaturity, insecurity, disappointment."
     },
     {
       "name": "Knight of Cups",
-      "image": "/cards/knight_of_cups.png",
+      "image": "cards/knight_of_cups.png",
       "description": "Romance, charm, imagination.",
       "reversed": "Moodiness, disappointment, unrealistic expectations."
     },
     {
       "name": "Queen of Cups",
-      "image": "/cards/queen_of_cups.png",
+      "image": "cards/queen_of_cups.png",
       "description": "Compassion, caring, emotional stability.",
       "reversed": "Emotional instability, moodiness, needy behavior."
     },
     {
       "name": "King of Cups",
-      "image": "/cards/king_of_cups.png",
+      "image": "cards/king_of_cups.png",
       "description": "Emotional balance, diplomacy, compassion.",
       "reversed": "Emotional manipulation, moodiness, coldness."
     }
@@ -222,85 +222,85 @@
   "Pentacles": [
     {
       "name": "Ace of Pentacles",
-      "image": "/cards/ace_of_pentacles.png",
+      "image": "cards/ace_of_pentacles.png",
       "description": "Prosperity, manifestation, opportunity.",
       "reversed": "Missed chances, scarcity mindset, financial losses."
     },
     {
       "name": "Two of Pentacles",
-      "image": "/cards/two_of_pentacles.png",
+      "image": "cards/two_of_pentacles.png",
       "description": "Balance, adaptability, time management.",
       "reversed": "Imbalance, disorganization, overwhelm."
     },
     {
       "name": "Three of Pentacles",
-      "image": "/cards/three_of_pentacles.png",
+      "image": "cards/three_of_pentacles.png",
       "description": "Collaboration, teamwork, learning.",
       "reversed": "Lack of teamwork, disharmony, competition."
     },
     {
       "name": "Four of Pentacles",
-      "image": "/cards/four_of_pentacles.png",
+      "image": "cards/four_of_pentacles.png",
       "description": "Security, control, conservatism.",
       "reversed": "Greed, materialism, financial insecurity."
     },
     {
       "name": "Five of Pentacles",
-      "image": "/cards/five_of_pentacles.png",
+      "image": "cards/five_of_pentacles.png",
       "description": "Financial loss, poverty, isolation.",
       "reversed": "Recovery, spiritual growth, asking for help."
     },
     {
       "name": "Six of Pentacles",
-      "image": "/cards/six_of_pentacles.png",
+      "image": "cards/six_of_pentacles.png",
       "description": "Generosity, charity, sharing wealth.",
       "reversed": "Selfishness, debt, unequal power dynamics."
     },
     {
       "name": "Seven of Pentacles",
-      "image": "/cards/seven_of_pentacles.png",
+      "image": "cards/seven_of_pentacles.png",
       "description": "Long-term view, perseverance, investment.",
       "reversed": "Lack of progress, impatience, poor investments."
     },
     {
       "name": "Eight of Pentacles",
-      "image": "/cards/eight_of_pentacles.png",
+      "image": "cards/eight_of_pentacles.png",
       "description": "Skill development, craftsmanship, quality work.",
       "reversed": "Lack of focus, poor quality work, shortcuts."
     },
     {
       "name": "Nine of Pentacles",
-      "image": "/cards/nine_of_pentacles.png",
+      "image": "cards/nine_of_pentacles.png",
       "description": "Luxury, self-sufficiency, financial independence.",
       "reversed": "Overspending, lack of independence, financial setbacks."
     },
     {
       "name": "Ten of Pentacles",
-      "image": "/cards/ten_of_pentacles.png",
+      "image": "cards/ten_of_pentacles.png",
       "description": "Wealth, family, long-term success.",
       "reversed": "Family disputes, financial failure, loss of legacy."
     },
     {
       "name": "Page of Pentacles",
-      "image": "/cards/page_of_pentacles.png",
+      "image": "cards/page_of_pentacles.png",
       "description": "Manifestation, financial opportunity, study.",
       "reversed": "Lack of progress, procrastination, missed opportunities."
     },
     {
       "name": "Knight of Pentacles",
-      "image": "/cards/knight_of_pentacles.png",
+      "image": "cards/knight_of_pentacles.png",
       "description": "Hard work, productivity, routine.",
       "reversed": "Laziness, boredom, feeling stuck."
     },
     {
       "name": "Queen of Pentacles",
-      "image": "/cards/queen_of_pentacles.png",
+      "image": "cards/queen_of_pentacles.png",
       "description": "Nurturing, practical, financial security.",
       "reversed": "Smothering, materialism, financial codependence."
     },
     {
       "name": "King of Pentacles",
-      "image": "/cards/king_of_pentacles.png",
+      "image": "cards/king_of_pentacles.png",
       "description": "Wealth, business, leadership.",
       "reversed": "Greed, materialism, financial recklessness."
     }
@@ -308,85 +308,85 @@
   "Swords": [
     {
       "name": "Ace of Swords",
-      "image": "/cards/ace_of_swords.png",
+      "image": "cards/ace_of_swords.png",
       "description": "Breakthrough, clarity, truth.",
       "reversed": "Confusion, brutality, chaos."
     },
     {
       "name": "Two of Swords",
-      "image": "/cards/two_of_swords.png",
+      "image": "cards/two_of_swords.png",
       "description": "Indecision, choices, stalemate.",
       "reversed": "Releasing tension, overcoming fears, making decisions."
     },
     {
       "name": "Three of Swords",
-      "image": "/cards/three_of_swords.png",
+      "image": "cards/three_of_swords.png",
       "description": "Heartbreak, sorrow, grief.",
       "reversed": "Healing, forgiveness, recovery."
     },
     {
       "name": "Four of Swords",
-      "image": "/cards/four_of_swords.png",
+      "image": "cards/four_of_swords.png",
       "description": "Rest, recovery, contemplation.",
       "reversed": "Restlessness, burnout, lack of progress."
     },
     {
       "name": "Five of Swords",
-      "image": "/cards/five_of_swords.png",
+      "image": "cards/five_of_swords.png",
       "description": "Conflict, defeat, win at all costs.",
       "reversed": "Reconciliation, making amends, forgiveness."
     },
     {
       "name": "Six of Swords",
-      "image": "/cards/six_of_swords.png",
+      "image": "cards/six_of_swords.png",
       "description": "Transition, moving on, leaving behind.",
       "reversed": "Emotional baggage, unresolved issues, resistance to change."
     },
     {
       "name": "Seven of Swords",
-      "image": "/cards/seven_of_swords.png",
+      "image": "cards/seven_of_swords.png",
       "description": "Deception, strategy, sneakiness.",
       "reversed": "Confession, exposure, accepting consequences."
     },
     {
       "name": "Eight of Swords",
-      "image": "/cards/eight_of_swords.png",
+      "image": "cards/eight_of_swords.png",
       "description": "Imprisonment, self-victimization, limiting beliefs.",
       "reversed": "Self-acceptance, new perspective, freedom."
     },
     {
       "name": "Nine of Swords",
-      "image": "/cards/nine_of_swords.png",
+      "image": "cards/nine_of_swords.png",
       "description": "Anxiety, nightmares, despair.",
       "reversed": "Hope, reaching out for help, inner turmoil."
     },
     {
       "name": "Ten of Swords",
-      "image": "/cards/ten_of_swords.png",
+      "image": "cards/ten_of_swords.png",
       "description": "Rock bottom, failure, collapse.",
       "reversed": "Recovery, regeneration, inevitable end."
     },
     {
       "name": "Page of Swords",
-      "image": "/cards/page_of_swords.png",
+      "image": "cards/page_of_swords.png",
       "description": "New ideas, curiosity, restlessness.",
       "reversed": "Deception, manipulation, all talk and no action."
     },
     {
       "name": "Knight of Swords",
-      "image": "/cards/knight_of_swords.png",
+      "image": "cards/knight_of_swords.png",
       "description": "Action, impulsiveness, defending beliefs.",
       "reversed": "No direction, disregard for consequences, unpredictability."
     },
     {
       "name": "Queen of Swords",
-      "image": "/cards/queen_of_swords.png",
+      "image": "cards/queen_of_swords.png",
       "description": "Supportive, empathetic, encouragement.",
       "reversed": "Coldness, bitterness, harsh judgment."
     },
     {
       "name": "King of Swords",
-      "image": "/cards/king_of_swords.png",
+      "image": "cards/king_of_swords.png",
       "description": "Authority, logical, truth.",
       "reversed": "Abuse of power, manipulation, tyranny."
     }
@@ -394,85 +394,85 @@
   "Wands": [
     {
       "name": "Ace of Wands",
-      "image": "/cards/ace_of_wands.png",
+      "image": "cards/ace_of_wands.png",
       "description": "Inspiration, growth, opportunity.",
       "reversed": "Delays, lack of motivation, missed opportunities."
     },
     {
       "name": "Two of Wands",
-      "image": "/cards/two_of_wands.png",
+      "image": "cards/two_of_wands.png",
       "description": "Planning, progress, discovery.",
       "reversed": "Fear of change, playing it safe, bad planning."
     },
     {
       "name": "Three of Wands",
-      "image": "/cards/three_of_wands.png",
+      "image": "cards/three_of_wands.png",
       "description": "Expansion, foresight, growth.",
       "reversed": "Lack of foresight, obstacles, delays in progress."
     },
     {
       "name": "Four of Wands",
-      "image": "/cards/four_of_wands.png",
+      "image": "cards/four_of_wands.png",
       "description": "Celebration, excitement, homecoming.",
       "reversed": "Lack of support, transience, home conflicts."
     },
     {
       "name": "Five of Wands",
-      "image": "/cards/five_of_wands.png",
+      "image": "cards/five_of_wands.png",
       "description": "Conflicts, disagreements, clashes, competition.",
       "reversed": "Avoidance of conflict, resolution, release of tension."
     },
     {
       "name": "Six of Wands",
-      "image": "/cards/six_of_wands.png",
+      "image": "cards/six_of_wands.png",
       "description": "Triumph, victory, triumph, recognition.",
       "reversed": "Fall from grace, lack of recognition, ego issues."
     },
     {
       "name": "Seven of Wands",
-      "image": "/cards/seven_of_wands.png",
+      "image": "cards/seven_of_wands.png",
       "description": "Conviction, strong-willed, determined.",
       "reversed": "Giving up, overwhelmed, self-doubt."
     },
     {
       "name": "Eight of Wands",
-      "image": "/cards/eight_of_wands.png",
+      "image": "cards/eight_of_wands.png",
       "description": "Quick action, receiving news, exciting times.",
       "reversed": "Delays, frustration, slowed progress."
     },
     {
       "name": "Nine of Wands",
-      "image": "/cards/nine_of_wands.png",
+      "image": "cards/nine_of_wands.png",
       "description": "Perseverance, courage, persistence, standing ground.",
       "reversed": "Exhaustion, giving up, lack of boundaries."
     },
     {
       "name": "Ten of Wands",
-      "image": "/cards/ten_of_wands.png",
+      "image": "cards/ten_of_wands.png",
       "description": "Burden, responsibility, overextending.",
       "reversed": "Avoiding responsibility, burning out, inability to delegate."
     },
     {
       "name": "Page of Wands",
-      "image": "/cards/page_of_wands.png",
+      "image": "cards/page_of_wands.png",
       "description": "Good News, outgoing, cheerfulness.",
       "reversed": "Bad news, lack of direction, delays."
     },
     {
       "name": "Knight of Wands",
-      "image": "/cards/knight_of_wands.png",
+      "image": "cards/knight_of_wands.png",
       "description": "Adventurousness, passion, confidence.",
       "reversed": "Recklessness, scattered energy, delays."
     },
     {
       "name": "Queen of Wands",
-      "image": "/cards/queen_of_wands.png",
+      "image": "cards/queen_of_wands.png",
       "description": "Passion, courage, self-assured.",
       "reversed": "Selfishness, jealousy, insecurities."
     },
     {
       "name": "King of Wands",
-      "image": "/cards/king_of_wands.png",
+      "image": "cards/king_of_wands.png",
       "description": "Inspiration, confidence, innovation.",
       "reversed": "Impulsiveness, arrogance, poor leadership."
     }
