@@ -49,7 +49,7 @@ const loadBackground = () => {
     .then(data => {
       tarotDescriptions = data;
       console.log("Tarot descriptions loaded:", tarotDescriptions);
-      fetch('tarot_reversed.json')
+      fetch('tarot_descriptions.json')
         .then(response => response.json())
         .then(data => {
           tarotReversed = data;
