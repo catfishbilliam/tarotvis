@@ -30,8 +30,8 @@ const loadBackground = () => {
     const sphere = new THREE.Mesh(geometry, material);
     scene.add(sphere);
     sphere.rotation.y = -Math.PI / -2;
-    console.log("Background loaded successfully.");
-  });
+console.log("Background loaded successfully.");
+});
 }; // Added missing closing brace
 
 // Tarot Variables
@@ -188,11 +188,6 @@ const loadSelectedCards = (selectedFiles, positions) => {
 // Manual Raycasting for Hover
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
-// For mouse events
-renderer.domElement.addEventListener('mousemove', handleCardInteraction);
-
-// For touch events
-renderer.domElement.addEventListener('touchstart', handleCardInteraction);
 
 const handleCardInteraction = (event) => {
   if (!loadingComplete) return;
