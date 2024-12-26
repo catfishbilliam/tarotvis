@@ -30,7 +30,7 @@ const loadBackground = () => {
       });
       const sphere = new THREE.Mesh(geometry, material);
       scene.add(sphere);
-      sphere.rotation.y = -Math.PI / 2;
+      sphere.rotation.y = -Math.PI / -2;
       console.log("Background loaded successfully.");
     });
   };
