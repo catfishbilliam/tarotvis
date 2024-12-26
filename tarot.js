@@ -1,3 +1,4 @@
+// 
 // Scene Setup
 console.log("Initializing scene...");
 const scene = new THREE.Scene();
@@ -35,6 +36,7 @@ console.log("Background loaded successfully.");
 }; // Added missing closing brace
 
 // Tarot Variables
+// Tarot Variables
 const cardMeshes = [];
 const loader = new THREE.TextureLoader();
 let tarotDescriptions = {};
@@ -48,7 +50,7 @@ fetch('tarot_descriptions.json')
   .then(data => {
     tarotDescriptions = data;
     console.log("Tarot descriptions loaded:", tarotDescriptions);
-    fetch('tarot_descriptions.json')
+    fetch('tarot_reversed.json')
       .then(response => response.json())
       .then(data => {
         tarotReversed = data;
@@ -58,61 +60,7 @@ fetch('tarot_descriptions.json')
   })
   .catch(error => console.error('Error loading tarot descriptions:', error));
 
-// Tooltip Setup
-const tooltip = document.createElement('div');
-tooltip.id = 'tooltip';
-tooltip.style.position = 'absolute';
-tooltip.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-tooltip.style.color = 'white';
-tooltip.style.padding = '10px';
-tooltip.style.borderRadius = '5px';
-tooltip.style.display = 'none';
-document.body.appendChild(tooltip);
-
-// Display Tooltip
-const showTooltip = (name, description, reversed, x, y, isReversed) => {
-  tooltip.style.left = `${x + 10}px`;
-  tooltip.style.top = `${y + 10}px`;
-  tooltip.style.display = 'block';
-  tooltip.innerHTML = `
-    <strong>${name}</strong><br/>
-    <strong>Upright:</strong> ${description}<br/>
-    <strong>Reversed:</strong> ${reversed}
-  `;
-
-  // Ensure tooltip stays within viewport
-  const rect = tooltip.getBoundingClientRect();
-  if (rect.right > window.innerWidth) {
-    tooltip.style.left = `${window.innerWidth - rect.width - 10}px`;
-  }
-  if (rect.bottom > window.innerHeight) {
-    tooltip.style.top = `${window.innerHeight - rect.height - 10}px`;
-  }
-};
-
-// Hide Tooltip
-const hideTooltip = () => {
-  tooltip.style.display = 'none';
-};
-
-// Get Random Cards
-const getRandomCards = (count) => {
-  console.log(`Selecting ${count} random cards...`);
-  const cardNames = Object.values(tarotDescriptions).flat().map(card => card.image);
-  const selectedCards = [];
-  const indices = [];
-
-  while (indices.length < count) {
-    const randomIndex = Math.floor(Math.random() * cardNames.length);
-    if (!indices.includes(randomIndex)) {
-      indices.push(randomIndex);
-      selectedCards.push(cardNames[randomIndex]);
-    }
-  }
-  console.log("Selected cards:", selectedCards);
-  return selectedCards;
-};
-
+// Function to load selected cards
 const loadSelectedCards = (selectedFiles, positions) => {
   console.log("Loading selected cards:", selectedFiles);
   cardMeshes.forEach(mesh => scene.remove(mesh));
