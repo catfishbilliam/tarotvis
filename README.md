@@ -11,9 +11,8 @@ Welcome to the **Tarot Card Reader** app! This interactive tarot reading app let
   - Celtic Cross
   - Four-Card Spread
   - Horseshoe Spread
-- **Hover for Card Information**: Hover over a card to display its name and description.
+- **Hover for Card Information**: Hover over a card to display its name and descriptions.
 - **Card Flipping**: Cards are randomly flipped upside down to simulate the random nature of tarot readings.
-- **Responsive Design**: The app works well on both desktop and mobile devices.
 - **Python Script for Card Extraction**: A Python script is included that allows you to cut out tarot cards from downloadable PDFs to be used in the app.
 
 ## Technologies Used
