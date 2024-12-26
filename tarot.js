@@ -78,8 +78,16 @@ const showTooltip = (name, description, reversed, x, y, isReversed) => {
       <strong>Upright:</strong> ${description}<br/>
       <strong>Reversed:</strong> ${reversed}
     `;
-  };
   
+    // Ensure tooltip stays within viewport
+    const rect = tooltip.getBoundingClientRect();
+    if (rect.right > window.innerWidth) {
+      tooltip.style.left = `${window.innerWidth - rect.width - 10}px`;
+    }
+    if (rect.bottom > window.innerHeight) {
+      tooltip.style.top = `${window.innerHeight - rect.height - 10}px`;
+    }
+};
 
 // Hide Tooltip
 const hideTooltip = () => {
@@ -179,30 +187,36 @@ const loadSelectedCards = (selectedFiles, positions) => {
 // Manual Raycasting for Hover
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
-window.addEventListener('mousemove', (event) => {
-    if (!loadingComplete) return;
-  
-    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-  
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(cardMeshes);
-  
-    if (intersects.length > 0) {
-      const hoveredCard = intersects[0].object;
-      const isReversed = hoveredCard.rotation.x === Math.PI;
-      showTooltip(
-        hoveredCard.userData.name,
-        hoveredCard.userData.description,
-        hoveredCard.userData.reversed,
-        event.clientX,
-        event.clientY,
-        isReversed
-      );
-    } else {
-      hideTooltip();
-    }
-  });
+// For mouse events
+renderer.domElement.addEventListener('mousemove', handleCardInteraction);
+
+// For touch events
+renderer.domElement.addEventListener('touchstart', handleCardInteraction);
+
+function handleCardInteraction(event) {
+  if (!loadingComplete) return;
+
+  mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+  mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(cardMeshes);
+
+  if (intersects.length > 0) {
+    const hoveredCard = intersects[0].object;
+    const isReversed = hoveredCard.rotation.x === Math.PI;
+    showTooltip(
+      hoveredCard.userData.name,
+      hoveredCard.userData.description,
+      hoveredCard.userData.reversed,
+      event.clientX,
+      event.clientY,
+      isReversed
+    );
+  } else {
+    hideTooltip();
+  }
+}
   
 // Spread Layouts
 const handleSpread = (spread) => {

@@ -29,7 +29,7 @@ const loadBackground = () => {
     });
     const sphere = new THREE.Mesh(geometry, material);
     scene.add(sphere);
-    sphere.rotation.y = -Math.PI / -2; // Slightly turned left
+    sphere.rotation.y = -Math.PI / -2; 
     console.log("Background loaded successfully.");
   });
 };
@@ -38,7 +38,8 @@ const loadBackground = () => {
 const cardMeshes = [];
 const loader = new THREE.TextureLoader();
 let tarotDescriptions = {};
-let loadingComplete = false; // Flag to track loading completion
+let tarotReversed = {};
+let loadingComplete = false; 
 
 // Fetch Descriptions from JSON
 console.log("Fetching tarot descriptions...");
@@ -47,8 +48,14 @@ fetch('tarot_descriptions.json')
   .then(data => {
     tarotDescriptions = data;
     console.log("Tarot descriptions loaded:", tarotDescriptions);
+    fetch('tarot_descriptions.json')
+  .then(response => response.json())
+  .then(data => {
+    tarotReversed = data;
+    console.log("Tarot reverse descriptions loaded:", tarotDescriptions);
   })
   .catch(error => console.error('Error loading tarot descriptions:', error));
+  })
 
 // Tooltip Setup
 const tooltip = document.createElement('div');
@@ -58,16 +65,21 @@ tooltip.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
 tooltip.style.color = 'white';
 tooltip.style.padding = '10px';
 tooltip.style.borderRadius = '5px';
-tooltip.style.display = 'none'; // Initially hidden
+tooltip.style.display = 'none'; 
 document.body.appendChild(tooltip);
 
 // Display Tooltip
-const showTooltip = (name, description, x, y) => {
-  tooltip.style.left = `${x + 10}px`;
-  tooltip.style.top = `${y + 10}px`;
-  tooltip.style.display = 'block';
-  tooltip.innerHTML = `<strong>${name}</strong><br/>${description}`;
-};
+const showTooltip = (name, description, reversed, x, y, isReversed) => {
+    tooltip.style.left = `${x + 10}px`;
+    tooltip.style.top = `${y + 10}px`;
+    tooltip.style.display = 'block';
+    tooltip.innerHTML = `
+      <strong>${name}</strong><br/>
+      <strong>Upright:</strong> ${description}<br/>
+      <strong>Reversed:</strong> ${reversed}
+    `;
+  };
+  
 
 // Hide Tooltip
 const hideTooltip = () => {
@@ -93,47 +105,55 @@ const getRandomCards = (count) => {
 };
 
 // Load Selected Cards
-// Load Selected Cards
 const loadSelectedCards = (selectedFiles, positions) => {
     console.log("Loading selected cards:", selectedFiles);
-    cardMeshes.forEach(mesh => scene.remove(mesh)); // Clear previous cards
+    cardMeshes.forEach(mesh => scene.remove(mesh)); 
     cardMeshes.length = 0; // Reset array
   
-    const geometry = new THREE.PlaneGeometry(2, 3.5); // Tarot card size
-    let loadedCount = 0; // Track loaded cards
+    const geometry = new THREE.PlaneGeometry(2, 3.5); 
+    let loadedCount = 0; 
   
     selectedFiles.forEach((file, index) => {
       loader.load(`cards/${file}`, (texture) => {
         const material = new THREE.MeshBasicMaterial({ 
           map: texture, 
           transparent: true,
-          side: THREE.DoubleSide // Fix for visibility issues
+          side: THREE.DoubleSide 
         });
         const card = new THREE.Mesh(geometry, material);
   
         // Attach JSON Data to Card
-        let cardData = { name: "Unknown", description: "No description available" };
-        Object.keys(tarotDescriptions).forEach(category => {
-          tarotDescriptions[category].forEach(cardInfo => {
-            if (cardInfo.image === file) {
-              cardData = { name: cardInfo.name, description: cardInfo.description };
-            }
+        let cardData = {
+            name: "Unknown",
+            description: "No description available",
+            reversed: "No reversed description available"
+          };
+    
+          Object.keys(tarotDescriptions).forEach(category => {
+            tarotDescriptions[category].forEach(cardInfo => {
+              if (cardInfo.image === file) {
+                cardData = {
+                  name: cardInfo.name,
+                  description: cardInfo.description,
+                  reversed: cardInfo.reversed
+                };
+              }
+            });
           });
-        });
-        card.userData = cardData; // Store data in card object
+        card.userData = cardData; 
         console.log("Card loaded:", cardData);
   
         // Set position and rotation
         card.position.set(0, 0, -10);
-        card.rotation.set(0, Math.PI, 0); // Default rotation
+        card.rotation.set(0, Math.PI, 0); 
   
         // Randomly flip card (turn it upside down) with reduced probability (25%)
-        if (Math.random() < 0.15) { // 25% chance to flip the card
-          card.rotation.x = Math.PI; // 180 degrees in radians
+        if (Math.random() < 0.50) { 
+          card.rotation.x = Math.PI; 
         }
   
         scene.add(card);
-        cardMeshes.push(card); // Add to mesh array for raycaster
+        cardMeshes.push(card); 
         console.log(`[Debug] Added to cardMeshes: ${cardData.name}`);
   
         // Animate position and flip
@@ -160,25 +180,30 @@ const loadSelectedCards = (selectedFiles, positions) => {
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 window.addEventListener('mousemove', (event) => {
-  if (!loadingComplete) {
-    return;
-  }
-
-  mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-  mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-
-  raycaster.setFromCamera(mouse, camera);
-  const intersects = raycaster.intersectObjects(cardMeshes);
-
-  if (intersects.length > 0) {
-    const hoveredCard = intersects[0].object;
-    showTooltip(hoveredCard.userData.name, hoveredCard.userData.description, event.clientX, event.clientY);
-  } else {
-    hideTooltip();
-  }
-});
-
-// Spread Layouts
+    if (!loadingComplete) return;
+  
+    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+  
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(cardMeshes);
+  
+    if (intersects.length > 0) {
+      const hoveredCard = intersects[0].object;
+      const isReversed = hoveredCard.rotation.x === Math.PI;
+      showTooltip(
+        hoveredCard.userData.name,
+        hoveredCard.userData.description,
+        hoveredCard.userData.reversed,
+        event.clientX,
+        event.clientY,
+        isReversed
+      );
+    } else {
+      hideTooltip();
+    }
+  });
+  
 // Spread Layouts
 const handleSpread = (spread) => {
     console.log(`Handling spread: ${spread}`);
@@ -225,8 +250,8 @@ const handleSpread = (spread) => {
       { label: 'Single Card', type: 'single' },
       { label: 'Three-Card Spread', type: 'three' },
       { label: 'Celtic Cross', type: 'celtic' },
-      { label: 'Four-Card Spread', type: 'four' },  // Added new spread
-      { label: 'Horseshoe Spread', type: 'horseshoe' } // Added new spread
+      { label: 'Four-Card Spread', type: 'four' },  
+      { label: 'Horseshoe Spread', type: 'horseshoe' } 
     ];
   
     spreads.forEach(spread => {
