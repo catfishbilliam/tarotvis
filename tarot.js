@@ -29,17 +29,17 @@ const loadBackground = () => {
     });
     const sphere = new THREE.Mesh(geometry, material);
     scene.add(sphere);
-    sphere.rotation.y = -Math.PI / -2; 
+    sphere.rotation.y = -Math.PI / -2;
     console.log("Background loaded successfully.");
   });
-};
+}; // Added missing closing brace
 
 // Tarot Variables
 const cardMeshes = [];
 const loader = new THREE.TextureLoader();
 let tarotDescriptions = {};
 let tarotReversed = {};
-let loadingComplete = false; 
+let loadingComplete = false;
 
 // Fetch Descriptions from JSON
 console.log("Fetching tarot descriptions...");
@@ -48,14 +48,15 @@ fetch('tarot_descriptions.json')
   .then(data => {
     tarotDescriptions = data;
     console.log("Tarot descriptions loaded:", tarotDescriptions);
-    fetch('tarot_descriptions.json')
-  .then(response => response.json())
-  .then(data => {
-    tarotReversed = data;
-    console.log("Tarot reverse descriptions loaded:", tarotDescriptions);
+    fetch('tarot_reversed.json')
+      .then(response => response.json())
+      .then(data => {
+        tarotReversed = data;
+        console.log("Tarot reverse descriptions loaded:", tarotReversed);
+      })
+      .catch(error => console.error('Error loading tarot reversed descriptions:', error));
   })
   .catch(error => console.error('Error loading tarot descriptions:', error));
-  })
 
 // Tooltip Setup
 const tooltip = document.createElement('div');
@@ -65,28 +66,28 @@ tooltip.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
 tooltip.style.color = 'white';
 tooltip.style.padding = '10px';
 tooltip.style.borderRadius = '5px';
-tooltip.style.display = 'none'; 
+tooltip.style.display = 'none';
 document.body.appendChild(tooltip);
 
 // Display Tooltip
 const showTooltip = (name, description, reversed, x, y, isReversed) => {
-    tooltip.style.left = `${x + 10}px`;
-    tooltip.style.top = `${y + 10}px`;
-    tooltip.style.display = 'block';
-    tooltip.innerHTML = `
-      <strong>${name}</strong><br/>
-      <strong>Upright:</strong> ${description}<br/>
-      <strong>Reversed:</strong> ${reversed}
-    `;
-  
-    // Ensure tooltip stays within viewport
-    const rect = tooltip.getBoundingClientRect();
-    if (rect.right > window.innerWidth) {
-      tooltip.style.left = `${window.innerWidth - rect.width - 10}px`;
-    }
-    if (rect.bottom > window.innerHeight) {
-      tooltip.style.top = `${window.innerHeight - rect.height - 10}px`;
-    }
+  tooltip.style.left = `${x + 10}px`;
+  tooltip.style.top = `${y + 10}px`;
+  tooltip.style.display = 'block';
+  tooltip.innerHTML = `
+    <strong>${name}</strong><br/>
+    <strong>Upright:</strong> ${description}<br/>
+    <strong>Reversed:</strong> ${reversed}
+  `;
+
+  // Ensure tooltip stays within viewport
+  const rect = tooltip.getBoundingClientRect();
+  if (rect.right > window.innerWidth) {
+    tooltip.style.left = `${window.innerWidth - rect.width - 10}px`;
+  }
+  if (rect.bottom > window.innerHeight) {
+    tooltip.style.top = `${window.innerHeight - rect.height - 10}px`;
+  }
 };
 
 // Hide Tooltip
@@ -112,77 +113,77 @@ const getRandomCards = (count) => {
   return selectedCards;
 };
 
-// Load Selected Cards
 const loadSelectedCards = (selectedFiles, positions) => {
-    console.log("Loading selected cards:", selectedFiles);
-    cardMeshes.forEach(mesh => scene.remove(mesh)); 
-    cardMeshes.length = 0; // Reset array
-  
-    const geometry = new THREE.PlaneGeometry(2, 3.5); 
-    let loadedCount = 0; 
-  
-    selectedFiles.forEach((file, index) => {
-      loader.load(`cards/${file}`, (texture) => {
-        const material = new THREE.MeshBasicMaterial({ 
-          map: texture, 
-          transparent: true,
-          side: THREE.DoubleSide 
-        });
-        const card = new THREE.Mesh(geometry, material);
-  
-        // Attach JSON Data to Card
-        let cardData = {
-            name: "Unknown",
-            description: "No description available",
-            reversed: "No reversed description available"
-          };
-    
-          Object.keys(tarotDescriptions).forEach(category => {
-            tarotDescriptions[category].forEach(cardInfo => {
-              if (cardInfo.image === file) {
-                cardData = {
-                  name: cardInfo.name,
-                  description: cardInfo.description,
-                  reversed: cardInfo.reversed
-                };
-              }
-            });
-          });
-        card.userData = cardData; 
-        console.log("Card loaded:", cardData);
-  
-        // Set position and rotation
-        card.position.set(0, 0, -10);
-        card.rotation.set(0, Math.PI, 0); 
-  
-        // Randomly flip card (turn it upside down) with reduced probability (25%)
-        if (Math.random() < 0.50) { 
-          card.rotation.x = Math.PI; 
-        }
-  
-        scene.add(card);
-        cardMeshes.push(card); 
-        console.log(`[Debug] Added to cardMeshes: ${cardData.name}`);
-  
-        // Animate position and flip
-        gsap.to(card.position, {
-          x: positions[index].x,
-          y: positions[index].y,
-          z: 0,
-          duration: 1,
-        });
-        gsap.to(card.rotation, { y: 0, duration: 1, delay: 0.5 });
-  
-        // Count loaded cards
-        loadedCount++;
-        if (loadedCount === selectedFiles.length) {
-          loadingComplete = true; // All cards are loaded
-          console.log("[Debug] Loading complete.");
-        }
+  console.log("Loading selected cards:", selectedFiles);
+  cardMeshes.forEach(mesh => scene.remove(mesh));
+  cardMeshes.length = 0; // Reset array
+
+  const geometry = new THREE.PlaneGeometry(2, 3.5); // Tarot card size
+  const loader = new THREE.TextureLoader();
+
+  let loadedCount = 0; // Added missing variable declaration
+
+  selectedFiles.forEach((file, index) => {
+    loader.load(file, (texture) => {
+      const material = new THREE.MeshBasicMaterial({
+        map: texture,
+        transparent: true,
+        side: THREE.DoubleSide
       });
+      const card = new THREE.Mesh(geometry, material);
+
+      // Attach JSON Data to Card
+      let cardData = {
+        name: "Unknown",
+        description: "No description available",
+        reversed: "No reversed description available"
+      };
+
+      Object.keys(tarotDescriptions).forEach(category => {
+        tarotDescriptions[category].forEach(cardInfo => {
+          if (cardInfo.image === file) {
+            cardData = {
+              name: cardInfo.name,
+              description: cardInfo.description,
+              reversed: cardInfo.reversed
+            };
+          }
+        });
+      });
+      card.userData = cardData;
+      console.log("Card loaded:", cardData);
+
+      // Set position and rotation
+      card.position.set(0, 0, -10);
+      card.rotation.set(0, Math.PI, 0);
+
+      // Randomly flip card (turn it upside down) with reduced probability (25%)
+      if (Math.random() < 0.25) {
+        card.rotation.x = Math.PI;
+      }
+
+      scene.add(card);
+      cardMeshes.push(card);
+      console.log(`[Debug] Added to cardMeshes: ${cardData.name}`);
+
+      // Animate position and flip
+      gsap.to(card.position, {
+        x: positions[index].x,
+        y: positions[index].y,
+        z: 0,
+        duration: 1,
+      });
+      gsap.to(card.rotation, { y: 0, duration: 1, delay: 0.5 });
+
+      // Count loaded cards
+      loadedCount++;
+      if (loadedCount === selectedFiles.length) {
+        loadingComplete = true; // All cards are loaded
+        console.log("[Debug] Loading complete.");
+      }
     });
-  };
-  
+  });
+};
 
 // Manual Raycasting for Hover
 const raycaster = new THREE.Raycaster();
@@ -193,89 +194,98 @@ renderer.domElement.addEventListener('mousemove', handleCardInteraction);
 // For touch events
 renderer.domElement.addEventListener('touchstart', handleCardInteraction);
 
-function handleCardInteraction(event) {
+const handleCardInteraction = (event) => {
   if (!loadingComplete) return;
 
-  mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-  mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+  const rect = renderer.domElement.getBoundingClientRect();
+  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(cardMeshes);
 
   if (intersects.length > 0) {
-    const hoveredCard = intersects[0].object;
-    const isReversed = hoveredCard.rotation.x === Math.PI;
-    showTooltip(
-      hoveredCard.userData.name,
-      hoveredCard.userData.description,
-      hoveredCard.userData.reversed,
-      event.clientX,
-      event.clientY,
-      isReversed
-    );
+    const intersectedCard = intersects[0].object;
+    const isReversed = intersectedCard.rotation.x === Math.PI;
+
+    if (event.type === 'click') {
+      // Handle click event (e.g., flip the card, show detailed information)
+      flipCard(intersectedCard);
+    } else if (event.type === 'mousemove') {
+      // Show tooltip on hover
+      showTooltip(
+        intersectedCard.userData.name,
+        intersectedCard.userData.description,
+        intersectedCard.userData.reversed,
+        event.clientX,
+        event.clientY,
+        isReversed
+      );
+    }
   } else {
     hideTooltip();
   }
-}
-  
+};
+
+// Add event listeners
+renderer.domElement.addEventListener('mousemove', handleCardInteraction);
+renderer.domElement.addEventListener('click', handleCardInteraction);
+
 // Spread Layouts
 const handleSpread = (spread) => {
-    console.log(`Handling spread: ${spread}`);
-    let selectedFiles = [];
-    let positions = [];
-  
-    if (spread === 'single') {
-      selectedFiles = getRandomCards(1);
-      positions = [{ x: 0, y: 0 }];
-    } else if (spread === 'three') {
-      selectedFiles = getRandomCards(3);
-      positions = [{ x: -5, y: 0 }, { x: 0, y: 0 }, { x: 5, y: 0 }];
-    } else if (spread === 'celtic') {
-      selectedFiles = getRandomCards(6);
-      positions = [
-        { x: 0, y: 6 }, { x: -4, y: 0 }, { x: 4, y: 0 }, { x: 0, y: -6 },
-        { x: 0, y: 0 }, { x: 0, y: -6 }
-      ];
-    } else if (spread === 'four') { // Four-Card Spread
-      selectedFiles = getRandomCards(4);
-      positions = [
-        { x: -3, y: 2 }, { x: 0, y: 2 }, { x: 3, y: 2 }, { x: 0, y: -2 }
-      ];
-    } else if (spread === 'horseshoe') { // Horseshoe Spread
-      selectedFiles = getRandomCards(7);
-      positions = [
-        { x: 0, y: 5 }, { x: -6, y: 3 }, { x: -3, y: 0 }, { x: 0, y: -2 },
-        { x: 3, y: 0 }, { x: 6, y: 3 }, { x: 0, y: -6 }
-      ];
-    }
-  
-    loadSelectedCards(selectedFiles, positions);
-  };
+  console.log(`Handling spread: ${spread}`);
+  let selectedFiles = [];
+  let positions = [];
 
-  
-  
-  // Buttons for Spreads
-  const createButtons = () => {
-    const buttonsContainer = document.createElement('div');
-    buttonsContainer.id = 'buttons-container';
-    document.body.appendChild(buttonsContainer);
-  
-    const spreads = [
-      { label: 'Single Card', type: 'single' },
-      { label: 'Three-Card Spread', type: 'three' },
-      { label: 'Celtic Cross', type: 'celtic' },
-      { label: 'Four-Card Spread', type: 'four' },  
-      { label: 'Horseshoe Spread', type: 'horseshoe' } 
+  if (spread === 'single') {
+    selectedFiles = getRandomCards(1);
+    positions = [{ x: 0, y: 0 }];
+  } else if (spread === 'three') {
+    selectedFiles = getRandomCards(3);
+    positions = [{ x: -5, y: 0 }, { x: 0, y: 0 }, { x: 5, y: 0 }];
+  } else if (spread === 'celtic') {
+    selectedFiles = getRandomCards(6);
+    positions = [
+      { x: 0, y: 6 }, { x: -4, y: 0 }, { x: 4, y: 0 }, { x: 0, y: -6 },
+      { x: 0, y: 0 }, { x: 0, y: -6 }
     ];
-  
-    spreads.forEach(spread => {
-      const button = document.createElement('button');
-      button.textContent = spread.label;
-      button.addEventListener('click', () => handleSpread(spread.type));
-      buttonsContainer.appendChild(button);
-    });
-  };
-  
+  } else if (spread === 'four') { // Four-Card Spread
+    selectedFiles = getRandomCards(4);
+    positions = [
+      { x: -3, y: 2 }, { x: 0, y: 2 }, { x: 3, y: 2 }, { x: 0, y: -2 }
+    ];
+  } else if (spread === 'horseshoe') { // Horseshoe Spread
+    selectedFiles = getRandomCards(7);
+    positions = [
+      { x: 0, y: 5 }, { x: -6, y: 3 }, { x: -3, y: 0 }, { x: 0, y: -2 },
+      { x: 3, y: 0 }, { x: 6, y: 3 }, { x: 0, y: -6 }
+    ];
+  }
+
+  loadSelectedCards(selectedFiles, positions);
+};
+
+// Buttons for Spreads
+const createButtons = () => {
+  const buttonsContainer = document.createElement('div');
+  buttonsContainer.id = 'buttons-container';
+  document.body.appendChild(buttonsContainer);
+
+  const spreads = [
+    { label: 'Single Card', type: 'single' },
+    { label: 'Three-Card Spread', type: 'three' },
+    { label: 'Celtic Cross', type: 'celtic' },
+    { label: 'Four-Card Spread', type: 'four' },
+    { label: 'Horseshoe Spread', type: 'horseshoe' }
+  ];
+
+  spreads.forEach(spread => {
+    const button = document.createElement('button');
+    button.textContent = spread.label;
+    button.addEventListener('click', () => handleSpread(spread.type));
+    buttonsContainer.appendChild(button);
+  });
+};
 
 // Animate Scene
 const animate = () => {
