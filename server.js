@@ -38,6 +38,17 @@ const assistantId = "asst_9kYccjfnF9E4N243zlsUtFZN"; // Replace with your OpenAI
 app.post("/generate-tarot-story", async (req, res) => {
     console.log("[INFO] Received request to generate tarot story.");
 
+    // Validate API Key and Assistant ID
+    if (!process.env.OPENAI_KEY) {
+        console.error("[ERROR] Missing OpenAI API key.");
+        return res.status(500).send({ error: "Missing OpenAI API key." });
+    }
+
+    if (!assistantId) {
+        console.error("[ERROR] Missing Assistant ID.");
+        return res.status(500).send({ error: "Missing Assistant ID." });
+    }
+
     const { cards, spreadType } = req.body;
     console.log("[DEBUG] Cards:", cards);
     console.log("[DEBUG] Spread Type:", spreadType);
@@ -61,6 +72,8 @@ app.post("/generate-tarot-story", async (req, res) => {
     `;
 
     try {
+        console.log("[DEBUG] Story Prompt:", storyPrompt);
+
         console.log("[INFO] Creating thread...");
         const thread = await openai.beta.threads.create();
 
@@ -77,33 +90,52 @@ app.post("/generate-tarot-story", async (req, res) => {
 
         // Polling for run completion
         let runStatus = null;
-        while (!runStatus || runStatus.status !== 'completed') {
-            console.log("[INFO] Checking run status...");
+        let attempts = 0;
+        const maxAttempts = 15; // Limit to 30 seconds (15 attempts)
+
+        while ((!runStatus || runStatus.status !== 'completed') && attempts < maxAttempts) {
+            console.log(`[INFO] Checking run status... Attempt ${attempts + 1}/${maxAttempts}`);
             const runCheck = await openai.beta.threads.runs.retrieve(thread.id, run.id);
 
             if (runCheck.status === 'completed') {
                 runStatus = runCheck;
+                break;
             } else if (runCheck.status === 'failed') {
                 throw new Error("Assistant run failed.");
             }
 
             await new Promise(resolve => setTimeout(resolve, 2000)); // Poll every 2 seconds
+            attempts++;
+        }
+
+        if (attempts === maxAttempts) {
+            throw new Error("Assistant run timed out.");
         }
 
         console.log("[INFO] Fetching messages...");
         const messages = await openai.beta.threads.messages.list(thread.id);
 
-        // Extract the assistant's response
+        // Extract response safely
         const response = messages.data
-    .filter(msg => msg.role === 'assistant')
-    .map(msg => msg.content[0]?.text?.value) // Extract text content
-    .join("\n");
+            .filter(msg => msg.role === 'assistant')
+            .map(msg => {
+                const content = msg.content;
+                if (Array.isArray(content) && content[0]?.text?.value) {
+                    return content[0].text.value;
+                }
+                return "No meaningful response generated.";
+            })
+            .join("\n");
 
         console.log("[INFO] Story generated successfully.");
         res.send({ story: response });
 
     } catch (error) {
         console.error("[ERROR] Error generating story:", error.message);
+        if (error.response) {
+            console.error("[ERROR] Response Data:", error.response.data);
+            console.error("[ERROR] Headers:", error.response.headers);
+        }
         res.status(500).send({
             error: error.message,
             details: error.response ? error.response.data : "No additional error details."
