@@ -1,19 +1,11 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: './', // Relative paths for Netlify
+  root: 'public', // Set 'public' as the root directory
   build: {
-    outDir: 'dist', // Output directory for build
-    emptyOutDir: true, // Clear output directory before build
-    assetsDir: 'assets', // Ensure assets go in 'assets' folder
-  },
-  publicDir: 'public', // Serve static assets like images and JSON files
-  server: {
-    port: 3000, // Local dev server port
-  },
-  resolve: {
-    alias: {
-      '@': '/src', // Optional: Use '@' as alias for 'src/' folder
+    outDir: '../dist', // Adjust output directory to be outside 'public'
+    rollupOptions: {
+      input: 'index.html', // Entry point inside 'public'
     },
   },
 });
