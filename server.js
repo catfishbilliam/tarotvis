@@ -63,33 +63,33 @@ app.post("/generate-tarot-story", async (req, res) => {
     try {
         console.log("[DEBUG] Story Prompt:", storyPrompt);
 
-        // Create thread and run in a single request
+        // Create thread and run in a single API call
         console.log("[INFO] Creating thread and running assistant...");
-        const runResponse = await openai.beta.threads.createThreadAndRun({
+        const run = await openai.beta.threads.createAndRun({
             assistant_id: assistantId,
             thread: {
                 messages: [
                     {
-                        role: 'user',
+                        role: "user",
                         content: storyPrompt,
                     },
                 ],
             },
         });
 
-        const { thread_id, id: run_id } = runResponse;
+        console.log("[INFO] Run created:", run);
 
         // Polling for run completion
-        let runStatus = runResponse.status;
         let attempts = 0;
         const maxAttempts = 15; // Limit to 30 seconds (15 attempts)
+        let runStatus = run.status;
 
         while (runStatus !== 'completed' && attempts < maxAttempts) {
             console.log(`[INFO] Checking run status... Attempt ${attempts + 1}/${maxAttempts}`);
-            const runCheck = await openai.beta.threads.runs.retrieve(thread_id, run_id);
+            const runCheck = await openai.beta.threads.runs.retrieve(run.thread_id, run.id);
 
             if (runCheck.status === 'completed') {
-                runStatus = 'completed';
+                runStatus = runCheck.status;
                 break;
             } else if (runCheck.status === 'failed') {
                 throw new Error("Assistant run failed.");
@@ -99,14 +99,14 @@ app.post("/generate-tarot-story", async (req, res) => {
             attempts++;
         }
 
-        if (attempts === maxAttempts) {
+        if (runStatus !== 'completed') {
             throw new Error("Assistant run timed out.");
         }
 
         console.log("[INFO] Fetching messages...");
-        const messages = await openai.beta.threads.messages.list(thread_id);
+        const messages = await openai.beta.threads.messages.list(run.thread_id);
 
-        // Extract response safely
+        // Extract assistant's response
         const response = messages.data
             .filter(msg => msg.role === 'assistant')
             .map(msg => {
