@@ -56,7 +56,6 @@ app.post("/generate-tarot-story", async (req, res) => {
 
     storyPrompt += `
         Provide a meaningful narrative that expands on upright and reversed interpretations.
-        Use the vector store to enhance insights about meanings and relationships.
     `;
 
     try {
@@ -72,42 +71,44 @@ app.post("/generate-tarot-story", async (req, res) => {
         console.log("[INFO] Running assistant...");
         const run = await openai.beta.threads.runs.create(thread.id, {
             assistant_id: assistantId,
-            stream: true, // Enable streaming
-            tools: [{ type: "file_search" }]
         });
 
-        console.log("[INFO] Streaming response...");
+        // Polling for run completion
+        let runStatus = null;
+        while (!runStatus || runStatus.status !== 'completed') {
+            console.log("[INFO] Checking run status...");
+            const runCheck = await openai.beta.threads.runs.retrieve(thread.id, run.id);
 
-        // Stream response to the client
-        res.setHeader('Content-Type', 'text/event-stream');
-        res.setHeader('Cache-Control', 'no-cache');
-        res.setHeader('Connection', 'keep-alive');
-
-        run.on('data', chunk => {
-            if (chunk.choices) {
-                const text = chunk.choices[0]?.delta?.content;
-                if (text) {
-                    console.log(text); // Log streaming data
-                    res.write(text); // Send chunk to the client
-                }
+            if (runCheck.status === 'completed') {
+                runStatus = runCheck;
+            } else if (runCheck.status === 'failed') {
+                throw new Error("Assistant run failed.");
             }
-        });
 
-        run.on('end', () => {
-            console.log("[INFO] Streaming complete.");
-            res.end();
-        });
+            await new Promise(resolve => setTimeout(resolve, 2000)); // Poll every 2 seconds
+        }
 
-        run.on('error', (err) => {
-            console.error("[ERROR] Streaming failed:", err);
-            res.status(500).end();
-        });
+        console.log("[INFO] Fetching messages...");
+        const messages = await openai.beta.threads.messages.list(thread.id);
+
+        // Extract the assistant's response
+        const response = messages.data
+    .filter(msg => msg.role === 'assistant')
+    .map(msg => msg.content[0]?.text?.value) // Extract text content
+    .join("\n");
+
+        console.log("[INFO] Story generated successfully.");
+        res.send({ story: response });
 
     } catch (error) {
         console.error("[ERROR] Error generating story:", error.message);
-        res.status(500).send("Error generating story.");
+        res.status(500).send({
+            error: error.message,
+            details: error.response ? error.response.data : "No additional error details."
+        });
     }
 });
+
 
 
 

@@ -79,12 +79,15 @@ const updateStoryContainer = (story) => {
 
     // Parse JSON response if needed
     let parsedStory;
-    try {
-        const jsonData = JSON.parse(story); // Handle JSON input
-        parsedStory = jsonData.story || story; // Extract 'story' or fallback
-    } catch (e) {
-        parsedStory = story; // Use as-is if parsing fails
-    }
+try {
+    const jsonData = JSON.parse(story);
+    parsedStory = typeof jsonData.story === "string" 
+        ? jsonData.story // Use plain string directly
+        : JSON.stringify(jsonData.story); // Handle object fallback
+} catch (e) {
+    parsedStory = story; // Use raw text if JSON parsing fails
+}
+
 
     // Typewriter Effect
     let index = 0;
