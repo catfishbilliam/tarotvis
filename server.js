@@ -38,17 +38,6 @@ const assistantId = "asst_9kYccjfnF9E4N243zlsUtFZN"; // Replace with your OpenAI
 app.post("/generate-tarot-story", async (req, res) => {
     console.log("[INFO] Received request to generate tarot story.");
 
-    // Validate API Key and Assistant ID
-    if (!process.env.OPENAI_KEY) {
-        console.error("[ERROR] Missing OpenAI API key.");
-        return res.status(500).send({ error: "Missing OpenAI API key." });
-    }
-
-    if (!assistantId) {
-        console.error("[ERROR] Missing Assistant ID.");
-        return res.status(500).send({ error: "Missing Assistant ID." });
-    }
-
     const { cards, spreadType } = req.body;
     console.log("[DEBUG] Cards:", cards);
     console.log("[DEBUG] Spread Type:", spreadType);
@@ -74,31 +63,33 @@ app.post("/generate-tarot-story", async (req, res) => {
     try {
         console.log("[DEBUG] Story Prompt:", storyPrompt);
 
-        console.log("[INFO] Creating thread...");
-        const thread = await openai.beta.threads.create();
-
-        console.log("[INFO] Adding user message...");
-        await openai.beta.threads.messages.create(thread.id, {
-            role: 'user',
-            content: storyPrompt,
-        });
-
-        console.log("[INFO] Running assistant...");
-        const run = await openai.beta.threads.runs.create(thread.id, {
+        // Create thread and run in a single request
+        console.log("[INFO] Creating thread and running assistant...");
+        const runResponse = await openai.beta.threads.createThreadAndRun({
             assistant_id: assistantId,
+            thread: {
+                messages: [
+                    {
+                        role: 'user',
+                        content: storyPrompt,
+                    },
+                ],
+            },
         });
+
+        const { thread_id, id: run_id } = runResponse;
 
         // Polling for run completion
-        let runStatus = null;
+        let runStatus = runResponse.status;
         let attempts = 0;
         const maxAttempts = 15; // Limit to 30 seconds (15 attempts)
 
-        while ((!runStatus || runStatus.status !== 'completed') && attempts < maxAttempts) {
+        while (runStatus !== 'completed' && attempts < maxAttempts) {
             console.log(`[INFO] Checking run status... Attempt ${attempts + 1}/${maxAttempts}`);
-            const runCheck = await openai.beta.threads.runs.retrieve(thread.id, run.id);
+            const runCheck = await openai.beta.threads.runs.retrieve(thread_id, run_id);
 
             if (runCheck.status === 'completed') {
-                runStatus = runCheck;
+                runStatus = 'completed';
                 break;
             } else if (runCheck.status === 'failed') {
                 throw new Error("Assistant run failed.");
@@ -113,7 +104,7 @@ app.post("/generate-tarot-story", async (req, res) => {
         }
 
         console.log("[INFO] Fetching messages...");
-        const messages = await openai.beta.threads.messages.list(thread.id);
+        const messages = await openai.beta.threads.messages.list(thread_id);
 
         // Extract response safely
         const response = messages.data
