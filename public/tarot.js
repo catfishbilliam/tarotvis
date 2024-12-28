@@ -435,7 +435,7 @@ const loadSelectedCards = async (selectedFiles, positions, spreadType) => {
           // Show loading overlay
           showLoadingOverlay(); 
   
-          fetch('/.netlify/functions/generate-tarot-story', { // Updated path for Netlify
+          fetch('/generate-tarot-story', { 
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
