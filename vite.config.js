@@ -4,10 +4,11 @@ export default defineConfig({
   base: './', // Relative paths for Netlify deployment
   build: {
     outDir: 'dist', // Output directory
-    emptyOutDir: true, // Clear directory before building
+    emptyOutDir: true, // Clear dist folder before build
+    assetsDir: 'assets', // Place assets in the "assets" folder
   },
   server: {
-    port: 3000, // Development server
+    port: 3000, // Local development port
   },
-  assetsInclude: ['**/*.png', '**/*.json'], // Ensure static assets are bundled
+  publicDir: 'public', // Ensure public folder is included
 });
