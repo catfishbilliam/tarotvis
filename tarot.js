@@ -108,7 +108,7 @@ let scene, camera, renderer, controls; // Declare variables globally
 const loadBackground = () => {
     console.log("Loading background...");
     const loader = new THREE.TextureLoader();
-    loader.load('images/background.png', (texture) => {
+    loader.load('/images/background.png', (texture) => {
         const geometry = new THREE.SphereGeometry(50, 32, 32); // Reduced segments for performance
         const material = new THREE.MeshBasicMaterial({
             map: texture,
@@ -229,7 +229,7 @@ const getPhases = (spreadType) => {
 
 // Fetch Descriptions from JSON and prepare the training data
 console.log("Fetching tarot descriptions...");
-fetch('tarot_descriptions.json')
+fetch('/tarot_descriptions.json')
   .then(response => response.json())
   .then(data => {
     tarotDescriptions = data;
