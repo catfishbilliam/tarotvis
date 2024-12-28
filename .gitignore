@@ -18,7 +18,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Build files
-# dist/ <-- REMOVE this line!
+dist/
 build/
 .cache/
 .out/
@@ -28,14 +28,23 @@ build/
 
 # Static files and assets
 public/uploads/
-# *.png <-- REMOVE this line!
-# *.jpg <-- REMOVE this line!
+*.png
+*.jpg
 *.jpeg
 *.gif
 *.webp
 
+# Python virtual environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.sqlite3
+
 # Tarot-specific folders
-# images/cards/ <-- REMOVE this line!
+images/cards/
 pdf_exports/
 extracted_cards/
 
@@ -62,11 +71,7 @@ tarot-descriptions.json.bak
 .vite-cache/
 .cache/
 
-# Generated files for API testing
-tests/__snapshots__/
-
 # OS-specific files
 Thumbs.db
 
-# Local Netlify folder
-.netlify
+!Procfile
