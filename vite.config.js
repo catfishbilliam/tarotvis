@@ -1,14 +1,14 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: './', // Relative paths for Netlify deployment
+  base: './', // Relative paths for Netlify
   build: {
-    outDir: 'dist', // Output directory
-    emptyOutDir: true, // Clear dist folder before build
-    assetsDir: 'assets', // Place assets in the "assets" folder
+    outDir: 'dist',
+    emptyOutDir: true,
+    assetsDir: 'assets', // Ensure assets folder
   },
+  publicDir: 'public', // Serve static assets
   server: {
-    port: 3000, // Local development port
+    port: 3000,
   },
-  publicDir: 'public', // Ensure public folder is included
 });

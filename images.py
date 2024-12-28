@@ -1,24 +1,31 @@
 import json
+import os
+
+# Paths to input and output files
+input_path = r'C:\Users\conwa\OneDrive\Documents\tarot\public\tarot_descriptions.json'
+output_path = r'C:\Users\conwa\OneDrive\Documents\tarot\public\tarot_descriptions_fixed.json'
 
 # Read the JSON file
-with open(r'C:\Users\conwa\OneDrive\Documents\tarot\tarot_descriptions.json') as file:
+with open(input_path, 'r') as file:
     data = json.load(file)
 
-# Function to add 'cards/' before file names
-def add_cards_prefix(obj):
+# Function to fix file paths
+def fix_file_paths(obj):
     if isinstance(obj, dict):
-        return {k: add_cards_prefix(v) for k, v in obj.items()}
+        return {k: fix_file_paths(v) for k, v in obj.items()}
     elif isinstance(obj, list):
-        return [add_cards_prefix(elem) for elem in obj]
-    elif isinstance(obj, str) and obj.endswith(('.jpg', '.png', '.gif')):
-        return 'cards/' + obj
+        return [fix_file_paths(elem) for elem in obj]
+    elif isinstance(obj, str) and obj.startswith('assets/cards/'):
+        # Remove 'assets/' from the path
+        return obj.replace('assets/', '')
     else:
         return obj
 
-# Modify the data
-modified_data = add_cards_prefix(data)
+# Update the paths in the JSON data
+fixed_data = fix_file_paths(data)
 
-output_path = r'C:\Users\conwa\OneDrive\Documents\tarot\modified_tarot_descriptions.json'
+# Save the updated JSON file
 with open(output_path, 'w') as file:
-    json.dump(modified_data, file, indent=2)
-print(f"Modified JSON file has been saved as '{output_path}'")
+    json.dump(fixed_data, file, indent=2)
+
+print(f"Fixed JSON file has been saved as '{output_path}'")

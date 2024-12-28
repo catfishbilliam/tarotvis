@@ -108,7 +108,7 @@ let scene, camera, renderer, controls; // Declare variables globally
 const loadBackground = () => {
     console.log("Loading background...");
     const loader = new THREE.TextureLoader();
-    loader.load('/images/background.png', (texture) => {
+    loader.load('images/background.png', (texture) => {
         const geometry = new THREE.SphereGeometry(50, 32, 32); // Reduced segments for performance
         const material = new THREE.MeshBasicMaterial({
             map: texture,
@@ -229,7 +229,7 @@ const getPhases = (spreadType) => {
 
 // Fetch Descriptions from JSON and prepare the training data
 console.log("Fetching tarot descriptions...");
-fetch('/tarot_descriptions.json')
+fetch('tarot_descriptions.json') // Match dist folder structure
   .then(response => response.json())
   .then(data => {
     tarotDescriptions = data;
@@ -337,129 +337,130 @@ const streamStoryResponse = async (response) => {
 
 // Load Selected Cards and Update Story
 const loadSelectedCards = async (selectedFiles, positions, spreadType) => {
-  console.log("Loading selected cards:", selectedFiles);
-  cardMeshes.forEach(mesh => scene.remove(mesh)); // Clear previous meshes
-  cardMeshes.length = 0; // Reset cardMeshes array
-
-  const geometry = new THREE.PlaneGeometry(2, 3.5); // Define card size
-  const loader = new THREE.TextureLoader(); // Texture loader for card images
-  let loadedCount = 0; // Track number of loaded cards
-
-  selectedFiles.forEach((file, index) => {
-    loader.load(file, async (texture) => { // Async callback for texture loading
-      const material = new THREE.MeshBasicMaterial({
-        map: texture,
-        transparent: true,
-        side: THREE.DoubleSide
-      });
-      const card = new THREE.Mesh(geometry, material);
-
-      // Attach JSON Data to Card
-      let cardData = {
-        name: "Unknown",
-        description: "No description available.",
-        reversed: "No reversed description available."
-      };
-
-      // Match the selected card image with descriptions from JSON
-      Object.keys(tarotDescriptions).forEach(category => {
-        tarotDescriptions[category].forEach(cardInfo => {
-          if (cardInfo.image === file) { // Match based on image path
-            cardData = {
-              name: cardInfo.name,
-              description: cardInfo.description,
-              reversed: cardInfo.reversed
-            };
-          }
+    console.log("Loading selected cards:", selectedFiles);
+    cardMeshes.forEach(mesh => scene.remove(mesh)); // Clear previous meshes
+    cardMeshes.length = 0; // Reset cardMeshes array
+  
+    const geometry = new THREE.PlaneGeometry(2, 3.5); // Define card size
+    const loader = new THREE.TextureLoader(); // Texture loader for card images
+    let loadedCount = 0; // Track number of loaded cards
+  
+    selectedFiles.forEach((file, index) => {
+      // Update the path to match 'cards/' without 'assets/'
+      const filePath = `${file}`;
+      console.log(`[DEBUG] Loading card path: ${filePath}`);
+  
+      loader.load(filePath, async (texture) => {
+        const material = new THREE.MeshBasicMaterial({
+          map: texture,
+          transparent: true,
+          side: THREE.DoubleSide,
         });
-      });
-
-      console.log("Card Data Bound:", cardData);
-
-      // Assign data to card
-      card.userData = cardData;
-      console.log("Card loaded:", cardData);
-
-      // Set position and rotation
-      card.position.set(0, 0, -10);
-      card.rotation.set(0, Math.PI, 0);
-
-      // Randomly flip card (25% probability)
-      if (Math.random() < 0.25) {
-        card.rotation.x = Math.PI;
-      }
-
-      // Add card to scene
-      scene.add(card);
-      cardMeshes.push(card);
-      console.log(`[Debug] Added to cardMeshes: ${cardData.name}`);
-
-      // Animate position
-      if (!positions[index]) {
-        console.error(`[ERROR] Invalid position for card index ${index}. Positions array:`, positions);
-        return; // Prevent further execution for this card
-    }
-    
-    // Animate position and spinning effect
-gsap.fromTo(
-    card.position,
-    { x: 0, y: 0, z: -20 }, // Start far away
-    {
-        x: positions[index].x,
-        y: positions[index].y,
-        z: 0, // Move closer
-        duration: 1.5, // Slightly longer duration for smooth effect
-        ease: "power2.out" // Smooth easing effect
-    }
-);
-
-// Add rotation animation
-gsap.fromTo(
-    card.rotation,
-    { y: Math.PI * 2 }, // Start with a full spin
-    { y: 0, duration: 1.5, ease: "power2.out" } // Rotate to upright position
-);
-
-    
-      // Count loaded cards
-      loadedCount++;
-      if (loadedCount === selectedFiles.length) {
-        loadingComplete = true;
-        console.log("[Debug] Loading complete.");
-
-        // Prepare card data for request
-        const cardsData = cardMeshes.map(mesh => ({
+  
+        const card = new THREE.Mesh(geometry, material);
+  
+        // Attach JSON Data to Card
+        let cardData = {
+          name: "Unknown",
+          description: "No description available.",
+          reversed: "No reversed description available."
+        };
+  
+        // Match the selected card image with descriptions from JSON
+        Object.keys(tarotDescriptions).forEach(category => {
+          tarotDescriptions[category].forEach(cardInfo => {
+            // Match based on updated image path
+            if (cardInfo.image === file) { // Compare against plain 'cards/' path
+              cardData = {
+                name: cardInfo.name,
+                description: cardInfo.description,
+                reversed: cardInfo.reversed,
+              };
+            }
+          });
+        });
+  
+        console.log(`[DEBUG] Bound data to card: ${cardData.name}`);
+  
+        // Assign data to the card
+        card.userData = cardData;
+  
+        // Set position and rotation
+        card.position.set(0, 0, -10);
+        card.rotation.set(0, Math.PI, 0);
+  
+        // Randomly flip card (25% probability)
+        if (Math.random() < 0.25) {
+          card.rotation.x = Math.PI;
+        }
+  
+        // Add card to scene
+        scene.add(card);
+        cardMeshes.push(card);
+  
+        // Animate position and spinning effect
+        gsap.fromTo(
+          card.position,
+          { x: 0, y: 0, z: -20 }, // Start far away
+          {
+            x: positions[index].x,
+            y: positions[index].y,
+            z: 0, // Move closer
+            duration: 1.5,
+            ease: "power2.out" // Smooth easing
+          }
+        );
+  
+        gsap.fromTo(
+          card.rotation,
+          { y: Math.PI * 2 }, // Start with a full spin
+          { y: 0, duration: 1.5, ease: "power2.out" } // Rotate to upright
+        );
+  
+        // Count loaded cards
+        loadedCount++;
+        if (loadedCount === selectedFiles.length) {
+          loadingComplete = true;
+          console.log("[DEBUG] Loading complete.");
+  
+          // Prepare card data for request
+          const cardsData = cardMeshes.map(mesh => ({
             name: mesh.userData.name,
             description: mesh.userData.description,
             reversed: mesh.userData.reversed,
-        }));
-        
-        console.log("[DEBUG] Sending Cards Data:", cardsData);
-        
-        // Show loading overlay
-        showLoadingOverlay(); 
-        
-        fetch('/.netlify/functions/generate-tarot-story', {
+          }));
+  
+          console.log("[DEBUG] Sending Cards Data:", cardsData);
+  
+          // Show loading overlay
+          showLoadingOverlay(); 
+  
+          fetch('/.netlify/functions/generate-tarot-story', { // Updated path for Netlify
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                spreadType: spreadType,
-                cards: cardsData,
+              spreadType: spreadType,
+              cards: cardsData,
             }),
-        })
+          })
             .then(response => {
-                streamStoryResponse(response); // Call streaming function
+              streamStoryResponse(response); // Call streaming function
             })
             .catch(error => {
-                console.error("[ERROR] Failed to fetch story:", error.message);
-                hideLoadingOverlay(); // Hide overlay if error occurs
-            });               
-      }
+              console.error("[ERROR] Failed to fetch story:", error.message);
+              hideLoadingOverlay(); // Hide overlay if error occurs
+            });
+        }
+      }, 
+      undefined, // OnProgress callback (optional)
+      (err) => {
+        console.error(`[ERROR] Failed to load texture: ${filePath}`, err);
+      });
     });
-  });
-};
+  };
+  
 
 // Get Random Cards
 const getRandomCards = (count) => {
