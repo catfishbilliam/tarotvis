@@ -108,7 +108,7 @@ let scene, camera, renderer, controls; // Declare variables globally
 const loadBackground = () => {
     console.log("Loading background...");
     const loader = new THREE.TextureLoader();
-    loader.load('images/background.png', (texture) => {
+    loader.load('/images/background.png', (texture) => {
         const geometry = new THREE.SphereGeometry(50, 32, 32); // Reduced segments for performance
         const material = new THREE.MeshBasicMaterial({
             map: texture,
