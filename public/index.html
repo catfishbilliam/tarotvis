@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tarot Tales</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Audiowide&family=Cedarville+Cursive&family=Fascinate&family=Inter:ital,opsz,wght@0,14..32,700;1,14..32,700&family=Lunasima:wght@400;700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r123/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.123.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:," />
+</head>
+
+<body>
+  <!-- Buttons Container -->
+  <div id="buttons-container"></div>
+
+<!-- Story Container -->
+<div id="story-container" style="
+    position: absolute;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    color: white;
+    padding: 15px;
+    max-width: 300px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid white;
+    border-radius: 10px;
+    overflow-y: auto;
+    max-height: 80vh;
+    display: none; /* Initially hidden */
+">
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        font-size: 18px;
+        display: none; /* Initially hidden */
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+    ">
+        Loading...
+    </div>
+
+    <!-- Story Content -->
+    <div id="story-content"></div>
+</div>
+
+<div id="mobile-message" style="
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+">
+    This app is not available on mobile devices. Please use a desktop computer.
+</div>
+
+
+  <script>
+    console.log("THREE.js loaded:", typeof THREE);
+    console.log("OrbitControls available:", typeof THREE.OrbitControls !== "undefined");
+    console.log("GSAP loaded:", typeof gsap);
+
+    // Function to send tarot data to assistant for story generation
+    const generateStoryWithAssistant = async (selectedCards, spreadType) => {
+    try {
+        document.getElementById("loading-overlay").style.display = "flex"; // Show loading overlay
+
+        const response = await fetch("http://localhost:5000/generate-tarot-story", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ cards: selectedCards, spreadType: spreadType }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("[INFO] Story received:", data.story);
+        updateStoryContainer(data.story);
+    } catch (error) {
+        console.error("[ERROR] Failed to generate or fetch story:", error.message);
+    } finally {
+        document.getElementById("loading-overlay").style.display = "none"; // Hide loading overlay
+    }
+};
+
+
+    // Example usage:
+    const selectedCards = [
+        { name: "The Fool", description: "Represents new beginnings, adventure, and taking risks.", reversed: "Represents recklessness, poor decisions." },
+        { name: "The Lovers", description: "Represents love, union, and choices.", reversed: "Represents disharmony, difficult choices." },
+        { name: "Death", description: "Represents transformation and endings.", reversed: "Represents fear of change, resistance to transformation." }
+    ];
+
+    const spreadType = "three"; // Example spread type (Past, Present, Future)
+
+    // Update the story container in the UI
+    const updateStoryContainer = (storyHtml) => {
+        let storyContainer = document.getElementById("story-content");
+        storyContainer.innerHTML = storyHtml
+            .split('\n\n') // Add paragraph breaks
+            .map(paragraph => `<p>${paragraph.trim()}</p>`)
+            .join('');
+
+        document.getElementById("story-container").style.display = "block";
+    };
+  </script>
+
+  <!-- App Script -->
+  <script type="module" src="tarot.js"></script>
+</body>
+</html>
