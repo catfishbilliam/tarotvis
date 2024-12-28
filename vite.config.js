@@ -10,4 +10,10 @@ export default defineConfig({
   server: {
     port: 3000, // Local development server port
   },
+  assetsInclude: ['**/*.png', '**/*.jpg', '**/*.json'], // Ensure assets like images and JSON files are included
+  resolve: {
+    alias: {
+      '@': '/src', // Allows shorthand imports if needed later
+    },
+  },
 });
