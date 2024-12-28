@@ -439,7 +439,7 @@ gsap.fromTo(
         // Show loading overlay
         showLoadingOverlay(); 
         
-        fetch('http://localhost:5000/generate-tarot-story', {
+        fetch('/.netlify/functions/generate-tarot-story', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

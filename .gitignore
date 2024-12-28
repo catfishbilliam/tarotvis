@@ -76,3 +76,6 @@ tests/__snapshots__/
 
 # OS-specific files
 Thumbs.db
+
+# Local Netlify folder
+.netlify
