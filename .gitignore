@@ -18,7 +18,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Build files
-dist/
+# dist/ <-- REMOVE this line!
 build/
 .cache/
 .out/
@@ -28,23 +28,14 @@ build/
 
 # Static files and assets
 public/uploads/
-*.png
-*.jpg
+# *.png <-- REMOVE this line!
+# *.jpg <-- REMOVE this line!
 *.jpeg
 *.gif
 *.webp
 
-# Python virtual environment
-venv/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.sqlite3
-
 # Tarot-specific folders
-images/cards/
+# images/cards/ <-- REMOVE this line!
 pdf_exports/
 extracted_cards/
 
