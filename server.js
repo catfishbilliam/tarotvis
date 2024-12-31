@@ -65,9 +65,21 @@ const getPhases = (spreadType) => {
         single: ["Insight"],
         three: ["Past", "Present", "Future"],
         four: ["Situation", "Challenge", "Advice", "Outcome"],
+        celtic: [
+            "Present", "Challenge", "Subconscious", "Past",
+            "Goal", "Near Future", "Approach", "Environment",
+            "Hopes and Fears", "Outcome"
+        ],
+        horseshoe: [
+            "Influences", "Challenges", "Opportunities",
+            "Advice", "Near Future", "Obstacles", "Final Outcome"
+        ]
     };
-    return phases[spreadType] || [`Phase ${index + 1}`];
+
+    // Default to numbered phases if spreadType is missing or invalid
+    return phases[spreadType] || Array.from({ length: 10 }, (_, i) => `Phase ${i + 1}`);
 };
+
 
 app.post("/generate-tarot-story", async (req, res) => {
     console.log("[INFO] Received request to generate tarot story.");
