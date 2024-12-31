@@ -111,7 +111,7 @@ let scene, camera, renderer, controls; // Declare variables globally
 const loadBackground = () => {
     console.log("Loading background...");
     const loader = new THREE.TextureLoader();
-    loader.load('background.png', function (texture) {
+    loader.load('/background.png', function (texture) {
         const geometry = new THREE.SphereGeometry(500, 60, 40);
         const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
     
@@ -177,16 +177,8 @@ const initializeApp = () => {
    // Load background
 loadBackground();
 
-// Example: Load a single card image
-const cardImagePath = 'cards/card1.png';
-const loader = new THREE.TextureLoader();
-loader.load(cardImagePath, function (texture) {
-    const material = new THREE.MeshBasicMaterial({ map: texture });
-    console.log("Card image loaded successfully.");
-});
-
 // Fetch tarot descriptions JSON file
-fetch('/tarot_descriptions.json')
+fetch('/tarot-descriptions.json')
   .then(response => response.json())
   .then(data => {
       tarotDescriptions = data; // Save data to global variable
