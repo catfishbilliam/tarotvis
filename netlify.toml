@@ -1,9 +1,14 @@
+[build]
+  command = "npm run build"
+  functions = "functions"  # Specify where serverless functions are located
+  publish = "dist"         # Publish directory
+
 [dev]
   framework = "vite"
-  targetPort = 3003 # Port where Vite serves the frontend
-  port = 8888       # Netlify proxy port
+  targetPort = 3003
+  port = 8888
 
 [[redirects]]
   from = "/generate-tarot-story"
-  to = "http://localhost:3003/generate-tarot-story" # Proxy to Express server
+  to = "/.netlify/functions/generate-tarot-story" # Route API to the function
   status = 200
