@@ -8,24 +8,22 @@
   targetPort = 3003
   port = 8888
 
+# Redirect for API function
 [[redirects]]
   from = "/generate-tarot-story"
-  to = "/.netlify/functions/generate-tarot-story" # Route API to the function
+  to = "/.netlify/functions/generate-tarot-story"
+  status = 200
+
+# Serve static files correctly
+
+[[redirects]]
+  from = "/assets/*"
+  to = "/assets/:splat"
   status = 200
 
 [[redirects]]
-  from = "/images/*"
-  to = "/images/:splat"
-  status = 200
-
-[[redirects]]
-  from = "/tarot_descriptions.json"
-  to = "/tarot_descriptions.json"
-  status = 200
-
-[[redirects]]
-  from = "/background.png"
-  to = "/background.png"
+  from = "/tarot-descriptions.json"
+  to = "/tarot-descriptions.json"
   status = 200
 
 [[redirects]]
