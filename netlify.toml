@@ -22,3 +22,13 @@
   from = "/tarot_descriptions.json"
   to = "/tarot_descriptions.json"
   status = 200
+
+[[redirects]]
+  from = "/background.png"
+  to = "/background.png"
+  status = 200
+
+[[redirects]]
+  from = "/cards/*"
+  to = "/cards/:splat"
+  status = 200
