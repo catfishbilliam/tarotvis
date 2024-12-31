@@ -4,21 +4,21 @@ import { resolve } from 'path';
 export default defineConfig({
   root: 'public', // Set 'public' as the root directory
   server: {
-    port: 3003, // Changed the port from 3000 to 3001
+    port: 3003,
     proxy: {
       '/generate-tarot-story': {
-        target: 'http://localhost:3003', // Match Express server port
+        target: 'http://localhost:3003',
         changeOrigin: true,
         secure: false,
       },
     },
-    
   },
   build: {
-    outDir: '../dist', // Output directory outside the project root
-    emptyOutDir: true, // Force emptying the output directory
+    outDir: '../dist', // Output directory
+    emptyOutDir: true,
     rollupOptions: {
-      input: resolve(__dirname, 'public/index.html'), // Entry point
+      input: resolve(__dirname, 'public/index.html'),
     },
+    assetsDir: '', // Keep assets at the root level in dist
   },
 });

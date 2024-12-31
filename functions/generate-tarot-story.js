@@ -2,6 +2,8 @@ import express from 'express';
 import serverless from 'serverless-http';
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
 
 // Load environment variables
 dotenv.config();
@@ -14,6 +16,19 @@ const openai = new OpenAI({
 // Create Express App
 const app = express();
 app.use(express.json());
+
+// Load Tarot Descriptions JSON
+const tarotDescriptionsPath = path.resolve(__dirname, '../public/tarot_descriptions.json');
+let tarotDescriptions = {};
+
+// Read JSON File and Load Data
+try {
+    const rawData = fs.readFileSync(tarotDescriptionsPath, 'utf8');
+    tarotDescriptions = JSON.parse(rawData);
+    console.log("[INFO] Tarot descriptions loaded successfully.");
+} catch (error) {
+    console.error("[ERROR] Failed to load tarot descriptions:", error.message);
+}
 
 // Tarot Story Generator Route
 app.post("/generate-tarot-story", async (req, res) => {
@@ -35,7 +50,9 @@ app.post("/generate-tarot-story", async (req, res) => {
 
         cards.forEach((card, index) => {
             const phase = phases[index] || `Phase ${index + 1}`;
-            storyPrompt += `Phase: ${phase}\nCard: ${card.name}\nMeaning: ${card.description}\n---\n`;
+            const cardInfo = tarotDescriptions[card.name]; // Lookup card description from JSON
+            const description = cardInfo ? cardInfo.description : "Description not available.";
+            storyPrompt += `Phase: ${phase}\nCard: ${card.name}\nMeaning: ${description}\n---\n`;
         });
 
         storyPrompt += "\nProvide a meaningful narrative based on these cards.";
