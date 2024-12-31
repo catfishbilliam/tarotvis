@@ -111,18 +111,17 @@ let scene, camera, renderer, controls; // Declare variables globally
 const loadBackground = () => {
     console.log("Loading background...");
     const loader = new THREE.TextureLoader();
-    loader.load('./images/background.png', ...)
-    const geometry = new THREE.SphereGeometry(50, 32, 32); // Reduced segments for performance
-        const material = new THREE.MeshBasicMaterial({
-            map: texture,
-            side: THREE.BackSide,
-        });
+    loader.load('./images/background.png', function (texture) {
+        const geometry = new THREE.SphereGeometry(500, 60, 40);
+        const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
+    
         const sphere = new THREE.Mesh(geometry, material);
         scene.add(sphere);
-        sphere.rotation.y = -Math.PI / -2;
+    
+        sphere.rotation.y = -Math.PI / 2; // Fix rotation value if needed
         console.log("Background loaded successfully.");
-    });
-};
+    }); // Closing bracket should match
+}    
 
 // Buttons for Spreads
 const createButtons = () => {
