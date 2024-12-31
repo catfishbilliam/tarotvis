@@ -75,3 +75,5 @@ tarot-descriptions.json.bak
 Thumbs.db
 
 !Procfile
+# Local Netlify folder
+.netlify

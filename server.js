@@ -17,7 +17,7 @@ if (!process.env.OPENAI_KEY) {
 
 console.log("[DEBUG] OPENAI_KEY:", process.env.OPENAI_KEY ? "Key is set" : "Key is missing!");
 console.log("[DEBUG] NODE_ENV:", process.env.NODE_ENV || "development");
-console.log("[DEBUG] PORT:", process.env.PORT || 3000);
+console.log("[DEBUG] PORT:", process.env.PORT || 3001);
 
 // Create __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
@@ -163,7 +163,7 @@ app.post("/generate-tarot-story", async (req, res) => {
     }
 });
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3003;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
