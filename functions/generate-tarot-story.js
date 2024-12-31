@@ -20,7 +20,7 @@ app.use(express.json());
 let tarotDescriptions = {};
 
 try {
-    const rawData = fs.readFileSync(path.resolve(__dirname, 'tarot_descriptions.json'), 'utf8');
+    const rawData = fs.readFileSync(path.resolve(__dirname, 'tarot-descriptions.json'), 'utf8');
     tarotDescriptions = JSON.parse(rawData);
 } catch (error) {
     console.error("[ERROR] Failed to load tarot descriptions:", error.message);
