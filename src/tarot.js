@@ -118,7 +118,7 @@ const loadBackground = () => {
         const sphere = new THREE.Mesh(geometry, material);
         scene.add(sphere);
     
-        sphere.rotation.y = -Math.PI / 2; // Fix rotation value if needed
+        sphere.rotation.y = -Math.PI / -2; // Fix rotation value if needed
         console.log("Background loaded successfully.");
     }); // Closing bracket should match
 }    
