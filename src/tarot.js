@@ -111,7 +111,7 @@ let scene, camera, renderer, controls; // Declare variables globally
 const loadBackground = () => {
     console.log("Loading background...");
     const loader = new THREE.TextureLoader();
-    loader.load('/background.png', function (texture) {
+    loader.load('background.png', function (texture) {
         const geometry = new THREE.SphereGeometry(500, 60, 40);
         const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
     
@@ -178,7 +178,7 @@ const initializeApp = () => {
 loadBackground();
 
 // Example: Load a single card image
-const cardImagePath = '/cards/card1.png';
+const cardImagePath = 'cards/card1.png';
 const loader = new THREE.TextureLoader();
 loader.load(cardImagePath, function (texture) {
     const material = new THREE.MeshBasicMaterial({ map: texture });
@@ -233,7 +233,7 @@ let loadingComplete = false;
 
 // Fetch Descriptions from JSON and prepare the training data
 console.log("Fetching tarot descriptions...");
-fetch('tarot_descriptions.json')
+fetch('tarot-descriptions.json')
   .then(response => response.json())
   .then(data => {
     tarotDescriptions = data;
