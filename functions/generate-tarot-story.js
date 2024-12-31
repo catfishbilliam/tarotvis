@@ -17,9 +17,15 @@ const openai = new OpenAI({
 const app = express();
 app.use(express.json());
 
-// Load Tarot Descriptions JSON
-const tarotDescriptionsPath = path.resolve(__dirname, '../public/tarot_descriptions.json');
 let tarotDescriptions = {};
+
+try {
+    const rawData = fs.readFileSync(path.resolve(__dirname, 'tarot_descriptions.json'), 'utf8');
+    tarotDescriptions = JSON.parse(rawData);
+} catch (error) {
+    console.error("[ERROR] Failed to load tarot descriptions:", error.message);
+}
+
 
 // Read JSON File and Load Data
 try {

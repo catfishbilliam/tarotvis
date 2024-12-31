@@ -14,11 +14,13 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: '../dist', // Output directory
+    outDir: '../dist',
     emptyOutDir: true,
     rollupOptions: {
       input: resolve(__dirname, 'public/index.html'),
     },
-    assetsDir: '', // Keep assets at the root level in dist
+    assetsDir: '', // Keeps assets in root
+    copyPublicDir: true // Ensure public directory is copied
   },
+  
 });

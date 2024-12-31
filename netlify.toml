@@ -12,3 +12,13 @@
   from = "/generate-tarot-story"
   to = "/.netlify/functions/generate-tarot-story" # Route API to the function
   status = 200
+
+[[redirects]]
+  from = "/images/*"
+  to = "/images/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/tarot_descriptions.json"
+  to = "/tarot_descriptions.json"
+  status = 200
