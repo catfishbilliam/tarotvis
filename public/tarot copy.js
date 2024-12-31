@@ -212,18 +212,33 @@ let tarotDescriptions = {};
 let tarotReversed = {};
 let loadingComplete = false;
 
-
+const getPhases = (spreadType) => {
+  const phases = {
+    single: ["Insight"],
+    three: ["Past", "Present", "Future"],
+    four: ["Situation", "Challenge", "Advice", "Outcome"],
+    celtic: [
+      "Present", "Challenge", "Subconscious", "Past",
+      "Goal", "Near Future", "Approach", "Environment",
+      "Hopes and Fears", "Outcome"
+    ],
+    horseshoe: [
+      "Influences", "Challenges", "Opportunities",
+      "Advice", "Near Future", "Obstacles", "Final Outcome"
+    ]
+  };
+  return phases[spreadType] || [`Phase ${index + 1}`];
+};
 
 // Fetch Descriptions from JSON and prepare the training data
 console.log("Fetching tarot descriptions...");
-fetch('tarot_descriptions.json')
+fetch('tarot_descriptions.json') // Match dist folder structure
   .then(response => response.json())
   .then(data => {
     tarotDescriptions = data;
     console.log("Tarot descriptions loaded:", tarotDescriptions);
   })
   .catch(error => console.error('Error loading tarot descriptions:', error));
-
 
 // AbortController for managing streams
 let currentStreamController = null;
@@ -422,24 +437,6 @@ const loadSelectedCards = async (selectedFiles, positions, spreadType) => {
   
           // Show loading overlay
           showLoadingOverlay(); 
-
-          const getPhases = (spreadType) => {
-            const phases = {
-              single: ["Insight"],
-              three: ["Past", "Present", "Future"],
-              four: ["Situation", "Challenge", "Advice", "Outcome"],
-              celtic: [
-                "Present", "Challenge", "Subconscious", "Past",
-                "Goal", "Near Future", "Approach", "Environment",
-                "Hopes and Fears", "Outcome"
-              ],
-              horseshoe: [
-                "Influences", "Challenges", "Opportunities",
-                "Advice", "Near Future", "Obstacles", "Final Outcome"
-              ]
-            };
-            return phases[spreadType] || [`Phase ${index + 1}`];
-          };
   
           fetch('/generate-tarot-story', { 
             method: 'POST',

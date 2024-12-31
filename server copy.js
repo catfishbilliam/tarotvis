@@ -6,15 +6,7 @@ import OpenAI from 'openai';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Load environment variables
-dotenv.config();
-
-// Validate API key
-if (!process.env.OPENAI_KEY) {
-    console.error("[ERROR] Missing OpenAI API key!");
-    process.exit(1);
-}
-
+// Log environment variables
 console.log("[DEBUG] OPENAI_KEY:", process.env.OPENAI_KEY ? "Key is set" : "Key is missing!");
 console.log("[DEBUG] NODE_ENV:", process.env.NODE_ENV || "development");
 console.log("[DEBUG] PORT:", process.env.PORT || 3000);
@@ -23,9 +15,12 @@ console.log("[DEBUG] PORT:", process.env.PORT || 3000);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Load environment variables
+dotenv.config();
+
 // Initialize OpenAI Client
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_KEY,
+    apiKey: process.env.OPENAI_KEY, // Ensure OPENAI_KEY is set in .env
 });
 
 // Create Express App
@@ -60,15 +55,6 @@ app.get('/health-check', async (req, res) => {
     }
 });
 
-const getPhases = (spreadType) => {
-    const phases = {
-        single: ["Insight"],
-        three: ["Past", "Present", "Future"],
-        four: ["Situation", "Challenge", "Advice", "Outcome"],
-    };
-    return phases[spreadType] || [`Phase ${index + 1}`];
-};
-
 app.post("/generate-tarot-story", async (req, res) => {
     console.log("[INFO] Received request to generate tarot story.");
 
@@ -90,21 +76,17 @@ app.post("/generate-tarot-story", async (req, res) => {
     try {
         console.log("[DEBUG] Story Prompt:", storyPrompt);
 
-        // Create thread
-        const thread = await openai.beta.threads.create();
-        const message = await openai.beta.threads.messages.create(thread.id, {
-            role: "user",
-            content: storyPrompt,
-        });
-
-        // Start assistant run
-        const run = await openai.beta.threads.runs.create(thread.id, {
+        console.log("[INFO] Creating thread and running assistant...");
+        const run = await openai.beta.threads.createAndRun({
             assistant_id: assistantId,
+            thread: {
+                messages: [
+                    { role: "user", content: storyPrompt },
+                ],
+            },
         });
 
-        if (!thread || !thread.id || !run || !run.id) {
-            throw new Error("Failed to create thread or run.");
-        }
+        console.log("[INFO] Run created:", run);
 
         // Polling for run completion
         let attempts = 0;
@@ -113,7 +95,7 @@ app.post("/generate-tarot-story", async (req, res) => {
 
         while (runStatus !== 'completed' && attempts < maxAttempts) {
             console.log(`[DEBUG] Polling run status: ${runStatus}. Attempt: ${attempts + 1}`);
-            const runCheck = await openai.beta.threads.runs.retrieve(thread.id, run.id);
+            const runCheck = await openai.beta.threads.runs.retrieve(run.thread_id, run.id);
 
             if (runCheck.status === 'completed') {
                 runStatus = runCheck.status;
@@ -131,12 +113,18 @@ app.post("/generate-tarot-story", async (req, res) => {
         }
 
         console.log("[INFO] Fetching messages...");
-        const messages = await openai.beta.threads.messages.list(thread.id);
+        const messages = await openai.beta.threads.messages.list(run.thread_id);
 
         // Extract assistant's response
         const response = messages.data
             .filter(msg => msg.role === 'assistant')
-            .map(msg => msg.content[0]?.text?.value || "No meaningful response generated.")
+            .map(msg => {
+                const content = msg.content;
+                if (Array.isArray(content) && content[0]?.text?.value) {
+                    return content[0].text.value;
+                }
+                return "No meaningful response generated.";
+            })
             .join("\n");
 
         console.log("[INFO] Story generated successfully.");
@@ -144,12 +132,25 @@ app.post("/generate-tarot-story", async (req, res) => {
 
     } catch (error) {
         console.error("[ERROR] Error generating story:", error.message);
+        if (error.response) {
+            console.error("[ERROR] Response Data:", JSON.stringify(error.response.data, null, 2));
+            console.error("[ERROR] Headers:", error.response.headers);
+        }
         res.status(500).send({
             error: error.message,
             details: error.response ? error.response.data : "No additional error details."
         });
     }
 });
+
+const getPhases = (spreadType) => {
+    const phases = {
+        single: ["Insight"],
+        three: ["Past", "Present", "Future"],
+        four: ["Situation", "Challenge", "Advice", "Outcome"],
+    };
+    return phases[spreadType] || [`Phase ${index + 1}`];
+};
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {

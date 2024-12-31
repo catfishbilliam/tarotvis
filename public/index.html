@@ -140,41 +140,64 @@ Loading...
         console.log("OrbitControls available:", typeof THREE.OrbitControls !== "undefined");
         console.log("GSAP loaded:", typeof gsap);
 
-        // Handle Intention Submission
+        // Intention Submission
         const intentionInput = document.getElementById('intention-text');
         const submitIntentionButton = document.getElementById('submit-intention');
         const intentionConfirmation = document.getElementById('intention-confirmation');
 
         submitIntentionButton.addEventListener('click', () => {
-        const intention = intentionInput.value.trim();
-        if (intention) {
-            console.log('Intention submitted:', intention);
-            intentionConfirmation.style.display = 'block';
-        } else {
-            alert('Please enter an intention before submitting.');
-        }
+            const intention = intentionInput.value.trim();
+            if (intention) {
+                console.log('Intention submitted:', intention);
+                intentionConfirmation.style.display = 'block';
+            } else {
+                alert('Please enter an intention before submitting.');
+            }
         });
 
-        // Handle Deck Shuffle
+        // Deck Controls
         const shuffleDeckButton = document.getElementById('shuffle-deck');
         const clearDeckButton = document.getElementById('clear-deck');
         const deckStatus = document.getElementById('deck-status');
 
         shuffleDeckButton.addEventListener('click', () => {
-        console.log('Shuffling the deck...');
-        deckStatus.textContent = 'Deck shuffled!';
-        setTimeout(() => {
-            deckStatus.textContent = '';
-        }, 2000);
+            console.log('Shuffling the deck...');
+            deckStatus.textContent = 'Deck shuffled!';
+            setTimeout(() => { deckStatus.textContent = ''; }, 2000);
         });
 
         clearDeckButton.addEventListener('click', () => {
-        console.log('Clearing the deck...');
-        deckStatus.textContent = 'Deck cleared!';
-        setTimeout(() => {
-            deckStatus.textContent = '';
-        }, 2000);
+            console.log('Clearing the deck...');
+            deckStatus.textContent = 'Deck cleared!';
+            setTimeout(() => { deckStatus.textContent = ''; }, 2000);
         });
+
+        // Tarot Story Generation
+        const storyContainer = document.getElementById('story-container');
+        const storyContent = document.getElementById('story-content');
+        const loadingOverlay = document.getElementById('loading-overlay');
+
+        async function fetchTarotStory(spreadType, cards) {
+            try {
+                loadingOverlay.style.display = 'flex';
+                const data = { spreadType, cards };
+                const response = await fetch('/generate-tarot-story', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) throw new Error(`Server error: ${response.status}`);
+                const result = await response.json();
+                storyContent.innerHTML = result.story.replace(/\n/g, '<br>');
+                storyContainer.style.display = 'block';
+            } catch (error) {
+                console.error('Error:', error);
+                storyContent.innerHTML = '<p style="color: red;">Error generating story.</p>';
+                storyContainer.style.display = 'block';
+            } finally {
+                loadingOverlay.style.display = 'none';
+            }
+        }
     </script>
 
     <script type="module" src="tarot.js"></script>
